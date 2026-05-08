@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, ButtonHTMLAttributes } from 'react'
+import type { CSSProperties, ReactNode, ButtonHTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'

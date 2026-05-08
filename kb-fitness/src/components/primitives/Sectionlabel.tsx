@@ -1,4 +1,4 @@
-import { ReactNode, HTMLAttributes } from 'react'
+import type { ReactNode, HTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export interface SectionlabelProps extends HTMLAttributes<HTMLDivElement> {

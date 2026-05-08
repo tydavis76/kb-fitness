@@ -1,4 +1,4 @@
-import { ReactNode, HTMLAttributes } from 'react'
+import type { ReactNode, HTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export interface ScreenHeaderProps extends HTMLAttributes<HTMLDivElement> {

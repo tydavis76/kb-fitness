@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes } from 'react'
+import type { CSSProperties, HTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export type BlockType = 'straight' | 'superset' | 'circuit' | 'amrap' | 'ladder' | 'interval' | 'carry' | 'tempo'

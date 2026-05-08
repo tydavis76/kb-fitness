@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, HTMLAttributes } from 'react'
+import type { CSSProperties, ReactNode, HTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export type ChipTone = 'default' | 'accent' | 'work' | 'rest' | 'danger' | 'solid' | 'ghost'

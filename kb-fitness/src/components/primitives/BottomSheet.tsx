@@ -1,4 +1,4 @@
-import { ReactNode, HTMLAttributes, MouseEvent } from 'react'
+import type { ReactNode, HTMLAttributes, MouseEvent } from 'react'
 import { tokens } from '../../styles/tokens'
 
 export interface BottomSheetProps extends HTMLAttributes<HTMLDivElement> {
