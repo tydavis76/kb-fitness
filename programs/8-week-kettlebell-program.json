@@ -1,0 +1,1854 @@
+{
+  "program_id": "8wk-kb-healthier-you",
+  "title": "8 Weeks to a Healthier You",
+  "author": "Luka Hocevar",
+  "schema_version": "WorkoutSessionV2",
+  "duration_weeks": 8,
+  "phases": [
+    {
+      "id": "phase_1",
+      "name": "Foundation",
+      "weeks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "notes": "Build foundational movement quality. Master the clean, hinge, and squat before adding load."
+    },
+    {
+      "id": "phase_2",
+      "name": "Progression",
+      "weeks": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "notes": "Add explosive contrast movements (jumps, broad jumps) and more complex patterns."
+    }
+  ],
+  "weekly_structure": {
+    "monday": "strength_1",
+    "tuesday": "conditioning_1",
+    "wednesday": "rest_or_rebound",
+    "thursday": "strength_2",
+    "friday": "conditioning_2",
+    "saturday": "strength_3",
+    "sunday": "rest_or_rebound"
+  },
+  "session_templates": [
+    {
+      "session_id": "strength_1_phase_1",
+      "metadata": {
+        "title": "Strength #1 (Weeks 1\u20134)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_1",
+          "monday"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "superset",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "double_kb_squat",
+              "name": "Double Kettlebell Squat",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Clean bells to rack position first",
+                  "Push knees forward and out; elbows inside knees at bottom",
+                  "Keep chest tall, don't collapse arms",
+                  "Progression: 1-second pause \u2192 3-second descent + pause"
+                ]
+              }
+            },
+            {
+              "exercise_id": "gorilla_row",
+              "name": "Gorilla Row",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "30\u201345 second rest after squat before rowing",
+                  "Drive non-rowing bell hard into ground",
+                  "1-second pause at top of each rep",
+                  "60\u201390 second rest between supersets"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_anterior_lunge",
+              "name": "Kettlebell Anterior Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Imagine yourself inside a trap bar",
+                  "Crush oranges with lats, brace abs, step back to reset",
+                  "Single-bell regression: bell on opposite side of stepping leg"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_clean_press",
+              "name": "Kettlebell Clean + Press",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Elbows in line with ears at top of press",
+                  "Pullup-style motion to return bells to rack",
+                  "Push body away from bell \u2014 don't push bell up",
+                  "Can be done single-arm"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "circuit",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "bulgarian_split_squat_hold",
+              "name": "Bulgarian Split Squat Hold",
+              "prescription": {
+                "type": "time",
+                "target": 35,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Slight hinge at waist, entire front foot on ground",
+                  "Push ground away throughout hold",
+                  "Progression: 35s \u2192 45s \u2192 60s over the program"
+                ]
+              }
+            },
+            {
+              "exercise_id": "hollow_hold",
+              "name": "Hollow Hold",
+              "prescription": {
+                "type": "time",
+                "target": 35,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Low back pressed into floor at all times",
+                  "L1: legs bent 90\u00b0 | L2: legs extended | L3: arms overhead"
+                ]
+              }
+            },
+            {
+              "exercise_id": "pushup_hold",
+              "name": "Pushup Hold (Half-Down)",
+              "prescription": {
+                "type": "time",
+                "target": 35,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Hands wide, lower halfway, hold",
+                  "Push ground inward, chin packed tight",
+                  "Regression: from knees or hands elevated on bench"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "kb_swing_bonus_s1",
+              "name": "Kettlebell Swing (Bonus Finisher)",
+              "prescription": {
+                "type": "reps",
+                "target": "100-200",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Beginner: 100 | Intermediate: 150 | Advanced: 200",
+                  "Record time; aim to beat it each week",
+                  "Sharp exhale at hip snap, keep bell in knee-crotch triangle"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "conditioning_1_phase_1",
+      "metadata": {
+        "title": "Conditioning #1 (Weeks 1\u20134)",
+        "environment": "Home",
+        "tags": [
+          "conditioning",
+          "anaerobic",
+          "phase_1",
+          "tuesday"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "circuit",
+          "rounds": 4,
+          "exercises": [
+            {
+              "exercise_id": "kb_deadlift_jump",
+              "name": "Kettlebell Deadlift Jump",
+              "prescription": {
+                "type": "time",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (light)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "10s work / 50s rest",
+                  "Choose weight allowing explosion and hangtime"
+                ]
+              }
+            },
+            {
+              "exercise_id": "explosive_pushup",
+              "name": "Explosive Pushups",
+              "prescription": {
+                "type": "time",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "10s work / 50s rest",
+                  "Max intent even if feet don't leave ground",
+                  "Regression: from knees or wall med-ball slams"
+                ]
+              }
+            },
+            {
+              "exercise_id": "lateral_slides_c1",
+              "name": "Lateral Slides",
+              "prescription": {
+                "type": "time",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "10s work / 50s rest",
+                  "Tap ground each side, push tempo"
+                ]
+              }
+            },
+            {
+              "exercise_id": "mountain_climber",
+              "name": "Mountain Climbers / Shuttle Sprints",
+              "prescription": {
+                "type": "time",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "10s work / 50s rest",
+                  "MAX intensity \u2014 imagine running full speed",
+                  "Week 1: 4 rounds; add time each week"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "strength_2_phase_1",
+      "metadata": {
+        "title": "Strength #2 (Weeks 1\u20134)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_1",
+          "thursday"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_sumo_deadlift",
+              "name": "Kettlebell Sumo Deadlift",
+              "prescription": {
+                "type": "reps",
+                "target": "10-12",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Chest tall \u2014 shirt logo visible at bottom",
+                  "Bells between feet, handles at ankles",
+                  "Crush lats, brace, push floor away; don't round spine",
+                  "Progression: 1-second pause, or 1.5-rep variation"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_floor_press",
+              "name": "Kettlebell Floor Press",
+              "prescription": {
+                "type": "reps",
+                "target": "10-12",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Single-arm; lie on side to load, roll to neutral to press",
+                  "Low back pressed into ground; elbow \u2265 45\u00b0 from body",
+                  "Support ~40% of bell weight with arm at bottom",
+                  "Progression: pause reps or 1.5-rep variation"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "offset_forward_lunge",
+              "name": "Offset Forward Kettlebell Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "One bell; step forward with same leg each rep",
+                  "Slight forward lean targets more muscles; reset to standing each rep"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "core_row",
+              "name": "Core Row",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Bells a few inches apart; feet wider than shoulder-width",
+                  "Drive non-rowing bell hard into floor; zero hip rotation",
+                  "1-second pause at top",
+                  "Regression: tripod on bench"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "amrap",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "kb_swing_emom",
+              "name": "Kettlebell Swing EMOM (Bonus)",
+              "prescription": {
+                "type": "reps",
+                "target": "10-14",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "6\u20138 sets; every minute on the minute",
+                  "Beginner: 8-10-12 | Intermediate: 10-12-14 | Advanced: 12-14-16",
+                  "Rest remaining seconds each minute"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "conditioning_2_phase_1",
+      "metadata": {
+        "title": "Conditioning #2 (Weeks 1\u20134)",
+        "environment": "Home",
+        "tags": [
+          "conditioning",
+          "aerobic",
+          "phase_1",
+          "friday"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "pulse_squats",
+              "name": "Pulse Squats (Jump every 4th)",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Half reps; jump on 4th"
+                ]
+              }
+            },
+            {
+              "exercise_id": "controlled_pushups",
+              "name": "Pushups (Controlled Cadence)",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Slower tempo than usual \u2014 sustain 24 minutes"
+                ]
+              }
+            },
+            {
+              "exercise_id": "kb_swing_c2",
+              "name": "Kettlebell Swing (Relaxed)",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Light and rhythmic; let bell float at top"
+                ]
+              }
+            },
+            {
+              "exercise_id": "kb_alternating_row",
+              "name": "Kettlebell Alternating Row",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Alt each rep, or 3 per side before switching"
+                ]
+              }
+            },
+            {
+              "exercise_id": "sit_through",
+              "name": "Sit-Through / Sit-Out",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "From pushup: thread rear leg through, chest high, butt supported",
+                  "Regression: sit-out from crawl position"
+                ]
+              }
+            },
+            {
+              "exercise_id": "step_over_lunge",
+              "name": "Step Over Lunge",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Reverse lunge \u2192 forward lunge in one flow",
+                  "R1: right leg | R2: left leg | R3: switch halfway",
+                  "Regression: reverse lunge only"
+                ]
+              }
+            },
+            {
+              "exercise_id": "hollow_hold_c2",
+              "name": "Hollow Hold",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Low back into floor; switch levels as needed"
+                ]
+              }
+            },
+            {
+              "exercise_id": "lateral_high_knees",
+              "name": "Lateral Slides + High Knees",
+              "prescription": {
+                "type": "time",
+                "target": 45,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "45s work / 15s rest",
+                  "Combine both; more relaxed than Conditioning #1"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "strength_3_phase_1",
+      "metadata": {
+        "title": "Strength #3 (Weeks 1\u20134)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_1",
+          "saturday",
+          "density"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "suitcase_deadlift",
+              "name": "Suitcase Deadlift",
+              "prescription": {
+                "type": "reps",
+                "target": 6,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Complex: do NOT set bell down between exercises",
+                  "Don't allow side-body to bend; maintain integrity"
+                ]
+              }
+            },
+            {
+              "exercise_id": "bent_row",
+              "name": "Bent Row (Suitcase)",
+              "prescription": {
+                "type": "reps",
+                "target": 6,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Complex: flow directly from suitcase DL"
+                ]
+              }
+            },
+            {
+              "exercise_id": "offset_squat",
+              "name": "Offset Squat",
+              "prescription": {
+                "type": "reps",
+                "target": 6,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Complex: clean bell to rack; resist offset pull on abs"
+                ]
+              }
+            },
+            {
+              "exercise_id": "push_press_complex",
+              "name": "Push Press",
+              "prescription": {
+                "type": "reps",
+                "target": 6,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Complex: last movement \u2014 initiate with legs, finish with shoulder",
+                  "Complete all 4 exercises one side then switch; rest between sides"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_bulgarian_split_squat",
+              "name": "Kettlebell Bulgarian Split Squat",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Balance on front foot, rear foot elevated",
+                  "Sit into hip with hinge at waist; soft knee at top",
+                  "Positive shin angle (knee over toes)",
+                  "Lift rear leg at top to confirm load is in front leg"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_bench_press_p1",
+              "name": "Kettlebell Bench Press",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Use medicine ball or bench; elbows 35\u00b0 from body",
+                  "Regression: single-bell floor press pyramid 5-4-3-2-1 per side"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "amrap",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "kb_rdl_density",
+              "name": "Kettlebell RDL",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "8-minute density block \u2014 max rounds; record and beat each week",
+                  "Bells outside feet; stop just above ankle, don't touch ground"
+                ]
+              }
+            },
+            {
+              "exercise_id": "yoga_pushup",
+              "name": "Yoga Pushup",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Slow, controlled; pushup position \u2192 downward dog flow"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "amrap",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "goblet_squat_1_5",
+              "name": "Kettlebell Goblet Squat (1.5 reps)",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "8-minute density block",
+                  "1.5 rep: down \u2192 halfway up \u2192 back down \u2192 all the way up = 1 rep",
+                  "Crush bell, elbows between knees, toes out slightly"
+                ]
+              }
+            },
+            {
+              "exercise_id": "single_arm_row_hold_1_5",
+              "name": "1-Arm Row Hold (1.5 reps)",
+              "prescription": {
+                "type": "reps",
+                "target": "6-8",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Lunge position, elbow on opposite knee",
+                  "Tall chest, drive elbow to pocket; squeeze glutes"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "strength_1_phase_2",
+      "metadata": {
+        "title": "Strength #1 (Weeks 5\u20138)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_2",
+          "monday",
+          "explosive"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "superset",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "staggered_squat",
+              "name": "Staggered Squat",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Clean to rack; rear foot is tripod \u2014 front leg does the work",
+                  "Parallel or below; soft upper back \u2014 choose weight accordingly"
+                ]
+              }
+            },
+            {
+              "exercise_id": "squat_jump",
+              "name": "Squat Jump",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "20-second rest after squat; then explode for max height"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "superset",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "single_arm_supported_row",
+              "name": "1-Arm Supported Row + Hold",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Bell slightly forward of arm for lat stretch; J-path pull",
+                  "1-second pause each rep; 10-second iso hold after final rep"
+                ]
+              }
+            },
+            {
+              "exercise_id": "offset_side_lunge",
+              "name": "Offset Side Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (opposite side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Foot travels directly sideways; sit into hip, knee behind toes",
+                  "Press inside blade of foot to align knee"
+                ]
+              }
+            },
+            {
+              "exercise_id": "half_kneeling_press",
+              "name": "Half Kneeling Press",
+              "prescription": {
+                "type": "reps",
+                "target": "6-8",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (opposite front leg)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Pull front heel toward knee to fire hamstring",
+                  "Brace abs; press without rib flare; zero body shift"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "superset",
+          "rounds": 2,
+          "exercises": [
+            {
+              "exercise_id": "pistol_squat_box",
+              "name": "Pistol Squat to Box",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Box at parallel; controlled sit-back; one foot off ground throughout"
+                ]
+              }
+            },
+            {
+              "exercise_id": "single_leg_hip_thrust",
+              "name": "Single Leg Hip Thrust",
+              "prescription": {
+                "type": "reps",
+                "target": "10-12",
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Shoulder blades on bench edge; drive elbows down",
+                  "Flat line chin-to-knee at top; per side"
+                ]
+              }
+            },
+            {
+              "exercise_id": "pike_pushup_iso",
+              "name": "Pike Push Up ISO Hold",
+              "prescription": {
+                "type": "time",
+                "target": 35,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Downward dog; bend elbows halfway; hold",
+                  "Push ground away; shift weight forward for more challenge"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "kb_swing_bonus_s1p2",
+              "name": "Kettlebell Swing (Bonus #2)",
+              "prescription": {
+                "type": "reps",
+                "target": "100-200",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Optional; aim to beat last session's rep count"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "conditioning_1_phase_2",
+      "metadata": {
+        "title": "Conditioning #1 (Weeks 5\u20138)",
+        "environment": "Home",
+        "tags": [
+          "conditioning",
+          "phase_2",
+          "tuesday",
+          "intervals"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "sprint_high_knees",
+              "name": "Sprint / High Knees",
+              "prescription": {
+                "type": "time",
+                "target": 15,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Rounds 1\u20133: short rest after",
+                  "Maximum effort"
+                ]
+              }
+            },
+            {
+              "exercise_id": "kb_crush_curl",
+              "name": "Kettlebell Crush Curl",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Grip bell by the bell; crush between palms; curl \u2014 chest activates too"
+                ]
+              }
+            },
+            {
+              "exercise_id": "v_sit",
+              "name": "V Sits",
+              "prescription": {
+                "type": "reps",
+                "target": 12,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Fists to chin; crunch up to grab shins; chin to shins; no relaxing"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "lateral_slides_c1p2",
+              "name": "Lateral Slides",
+              "prescription": {
+                "type": "time",
+                "target": 20,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Rounds 4\u20136: medium rest",
+                  "Vigorous tempo"
+                ]
+              }
+            },
+            {
+              "exercise_id": "oh_pulls",
+              "name": "Overhead Pulls",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Grip horns overhead; knees bent; lower behind head with control; pull back",
+                  "Bend elbows if lats are tight"
+                ]
+              }
+            },
+            {
+              "exercise_id": "rkc_plank",
+              "name": "RKC Plank",
+              "prescription": {
+                "type": "time",
+                "target": 20,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "On forearms; drive elbows toward knees; tall upper body"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_swing_c1p2",
+              "name": "Kettlebell Swings",
+              "prescription": {
+                "type": "time",
+                "target": 30,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Rounds 7\u20139: longer rest",
+                  "Light and consistent \u2014 don't overdo it"
+                ]
+              }
+            },
+            {
+              "exercise_id": "oh_waiter_walk",
+              "name": "Overhead Waiter Walk",
+              "prescription": {
+                "type": "time",
+                "target": 30,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Press overhead; elbow aligned with ear; strict posture; 30s per side"
+                ]
+              }
+            },
+            {
+              "exercise_id": "crawl_c1p2",
+              "name": "Crawl",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Low back like a glass of water; brace entire body; can go forward and reverse"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "strength_2_phase_2",
+      "metadata": {
+        "title": "Strength #2 (Weeks 5\u20138)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_2",
+          "thursday",
+          "explosive"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "superset",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "elevated_deadlift",
+              "name": "Elevated Deadlift",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Feet inside bells on 45lb plate for increased ROM",
+                  "Full tension before lift; crush lats, brace, pack chin",
+                  "Progression: 2-second hover just below plate at bottom"
+                ]
+              }
+            },
+            {
+              "exercise_id": "broad_jump",
+              "name": "Broad Jump",
+              "prescription": {
+                "type": "reps",
+                "target": 5,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Rise on toes \u2192 arms overhead \u2192 sit into hips \u2192 explode forward; land soft"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "single_arm_incline_press_1_5",
+              "name": "Single Arm Incline Press (1.5 reps)",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "On medicine ball; 1.5 rep = half press \u2192 back \u2192 full press = 1 rep",
+                  "Shoulders packed throughout"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "double_clean_reverse_lunge",
+              "name": "Double Clean to Reverse Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": "6-8",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Must be proficient at the clean; clean then immediately lunge",
+                  "Complete reps one side then rest; then other side",
+                  "Regression: single bell on opposite side of working leg"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "crawl_renegade_row",
+              "name": "Crawl Position Renegade Row",
+              "prescription": {
+                "type": "reps",
+                "target": "6-8",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Crawl position (knees bent + off ground), NOT plank",
+                  "Knees out for stability; push one bell into floor while rowing other",
+                  "Zero hip rotation; per side"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "circuit",
+          "rounds": 5,
+          "exercises": [
+            {
+              "exercise_id": "combo_row",
+              "name": "Combo: Row",
+              "prescription": {
+                "type": "reps",
+                "target": 1,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Flow into rotational clean without pause"
+                ]
+              }
+            },
+            {
+              "exercise_id": "combo_rot_clean",
+              "name": "Combo: Rotational Clean",
+              "prescription": {
+                "type": "reps",
+                "target": 1,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Clean to rack; face forward"
+                ]
+              }
+            },
+            {
+              "exercise_id": "combo_squat_rot_press",
+              "name": "Combo: Squat + Rotational Press",
+              "prescription": {
+                "type": "reps",
+                "target": 1,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Squat then rotate and press overhead"
+                ]
+              }
+            },
+            {
+              "exercise_id": "combo_offset_reverse_lunge",
+              "name": "Combo: Offset Reverse Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": 1,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Bell stays in rack; step into reverse lunge"
+                ]
+              }
+            },
+            {
+              "exercise_id": "combo_single_arm_swing",
+              "name": "Combo: Single Arm Swing",
+              "prescription": {
+                "type": "reps",
+                "target": 2,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "2 swings finishes one side; 5 total rounds per side then switch"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "conditioning_2_phase_2",
+      "metadata": {
+        "title": "Conditioning #2 (Weeks 5\u20138)",
+        "environment": "Home",
+        "tags": [
+          "conditioning",
+          "phase_2",
+          "friday"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "circuit",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "lateral_lunge_kb_shift",
+              "name": "Lateral Lunge KB Weight Shift",
+              "prescription": {
+                "type": "time",
+                "target": 40,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Wide lateral stance; reach bell to opposite toes; switch hands in middle",
+                  "Decelerate the swinging bell \u2014 mirrors athletic deceleration"
+                ]
+              }
+            },
+            {
+              "exercise_id": "crawl_pull_through_frog_pushup",
+              "name": "Crawl Pull-Through + Frog Pushup",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "From crawl: reach under and pull bell to opposite side",
+                  "After each bilateral pull-through: frog pushup (knees split wide on descent)",
+                  "Hips must not shift during pull-through"
+                ]
+              }
+            },
+            {
+              "exercise_id": "kb_clean_goblet_halo",
+              "name": "KB Clean to Goblet Squat with Halo",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Clean \u2192 squat \u2192 circle bell around head (halo)",
+                  "Abs braced during halo; don't arch lower back"
+                ]
+              }
+            },
+            {
+              "exercise_id": "pushup_shoulder_tap",
+              "name": "Pushup Shoulder Tap (Normal + Yoga)",
+              "prescription": {
+                "type": "reps",
+                "target": "8-10",
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Standard pushup \u2192 tap opposite shoulder at top",
+                  "After 2 standard: transition to yoga pushup variation with same taps",
+                  "Regression: from knees"
+                ]
+              }
+            },
+            {
+              "exercise_id": "skier_swing",
+              "name": "Skier Swing",
+              "prescription": {
+                "type": "reps",
+                "target": "10-12",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Bell outside foot; narrow stance; pistol-style grip",
+                  "Core works double to resist rotation",
+                  "Regression: suitcase deadlift to reduce momentum"
+                ]
+              }
+            },
+            {
+              "exercise_id": "hollow_hold_pull_through",
+              "name": "Hollow Hold Pull-Through",
+              "prescription": {
+                "type": "time",
+                "target": 40,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Choose hollow hold level (1\u20133); bell straight overhead",
+                  "Lower bell slightly behind head with straight arms",
+                  "Low back must stay pressed into floor throughout",
+                  "Regression: row hold for 40 seconds"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "session_id": "strength_3_phase_2",
+      "metadata": {
+        "title": "Strength #3 (Weeks 5\u20138)",
+        "environment": "Home",
+        "tags": [
+          "strength",
+          "phase_2",
+          "saturday",
+          "density"
+        ]
+      },
+      "blocks": [
+        {
+          "type": "superset",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "single_leg_rdl",
+              "name": "Single Leg RDL",
+              "prescription": {
+                "type": "reps",
+                "target": "6-8",
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Rear leg extended; toes pointed down \u2014 no hip rotation",
+                  "Tall chest, compress lats",
+                  "Regression: bent knee or reset on two feet between reps"
+                ]
+              }
+            },
+            {
+              "exercise_id": "jumping_lunge",
+              "name": "Jumping Lunge",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Max height contrast movement to single leg RDL"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "straight",
+          "rounds": 3,
+          "exercises": [
+            {
+              "exercise_id": "kb_bench_press_p2",
+              "name": "Kettlebell Bench Press",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Matched Kettlebells"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Flat bench; elbows close; never let bells touch at top",
+                  "Progression: pause at bottom or slow eccentric",
+                  "Regression: floor press or hip-thrust bench variation"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "amrap",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "staggered_rdl_swing",
+              "name": "Staggered RDL / Swing",
+              "prescription": {
+                "type": "reps",
+                "target": 8,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell (per side)"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "8-minute density block \u2014 record rounds; beat it each week",
+                  "Free leg as kickstand; load stays in front leg; no hip rotation"
+                ]
+              }
+            },
+            {
+              "exercise_id": "push_away_pushup",
+              "name": "Push Away Push Up",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": null,
+                  "label": "Bodyweight"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Child's pose (knees up) \u2192 forward to pushup \u2192 return",
+                  "L2: return via low path | L3: entire sequence stays low"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "amrap",
+          "rounds": 1,
+          "exercises": [
+            {
+              "exercise_id": "kb_clean_goblet_squat_density",
+              "name": "KB Clean to Goblet Squat",
+              "prescription": {
+                "type": "reps",
+                "target": 10,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "8-minute density block",
+                  "Grip horns; explode from floor; clean to chest; immediately squat"
+                ]
+              }
+            },
+            {
+              "exercise_id": "single_arm_row_hold_15s",
+              "name": "1-Arm Row Hold (15 seconds)",
+              "prescription": {
+                "type": "time",
+                "target": 15,
+                "load": {
+                  "value": null,
+                  "unit": "lbs",
+                  "label": "Kettlebell"
+                }
+              },
+              "protocol_constraints": {
+                "cues": [
+                  "Tripod on knees \u2192 lift knees \u2192 row to top \u2192 hold 15 seconds",
+                  "Regression: stay on knees or elevate upper body on bench"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

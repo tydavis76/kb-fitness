@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react'
-import type { WorkoutSession, LoggedSet, WorkoutLog } from '../db/types'
+import { createContext, useContext, useReducer, useCallback } from 'react'
+import type { WorkoutSession, LoggedSet } from '../db/types'
 import { db } from '../db/db'
 
 /**
@@ -39,7 +39,7 @@ interface ActiveWorkoutContextValue {
   nextBlock: () => void
   pauseWorkout: () => void
   resumeWorkout: () => void
-  completeWorkout: (rating: 'easy' | 'on_point' | 'hard') => Promise<void>
+  completeWorkout: (rating: 'easy' | 'on_point' | 'hard' | 'failed', notes?: string) => Promise<void>
 }
 
 const ActiveWorkoutContext = createContext<ActiveWorkoutContextValue | undefined>(undefined)
@@ -171,7 +171,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
     dispatch({ type: 'RESUME' })
   }, [])
 
-  const completeWorkout = useCallback(async (rating: 'easy' | 'on_point' | 'hard') => {
+  const completeWorkout = useCallback(async (rating: 'easy' | 'on_point' | 'hard' | 'failed', notes: string = '') => {
     if (!state.session || state.startedAt === null) return
 
     const completedAt = Date.now()
@@ -186,7 +186,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
     // Compute totalVolumeKg (sum of reps × kg per set, converting lb→kg)
     let totalVolumeKg = 0
     for (const set of allSets) {
-      if (set.actualReps !== null && set.actualLoad?.value !== null) {
+      if (set.actualReps !== null && set.actualLoad && set.actualLoad.value !== null) {
         let weightKg = set.actualLoad.value
         if (set.actualLoad.unit === 'lb') {
           weightKg = set.actualLoad.value / 2.20462 // Convert lb to kg
@@ -202,7 +202,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
       completedAt,
       durationSec,
       rating,
-      notes: '',
+      notes,
       totalVolumeKg: totalVolumeKg > 0 ? totalVolumeKg : null,
       sets: allSets,
     })

@@ -82,7 +82,7 @@ export interface WorkoutLog {
   programId: string
   completedAt: number
   durationSec: number
-  rating: 'easy' | 'on_point' | 'hard' | null
+  rating: 'easy' | 'on_point' | 'hard' | 'failed' | null
   notes: string
   totalVolumeKg: number | null
   sets: LoggedSet[]
