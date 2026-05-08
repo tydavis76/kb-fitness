@@ -1,3 +1,4 @@
+import path from 'path'
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -21,7 +22,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
-    alias: { '@': '/src' },
+    alias: { '@': path.resolve(__dirname, './src') },
   },
   test: {
     environment: 'jsdom',
