@@ -17,13 +17,6 @@ function formatDateParts(ts: number): { day: string; date: string } {
   }
 }
 
-function formatMonthDay(ts: number): string {
-  const d = new Date(ts)
-  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  return `${monthNames[d.getMonth()]} ${d.getDate()}`
-}
-
 function formatDuration(seconds: number): string {
   const mins = Math.round(seconds / 60)
   return `${mins}`

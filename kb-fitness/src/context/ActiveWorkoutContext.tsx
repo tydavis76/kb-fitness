@@ -207,6 +207,10 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
       sets: allSets,
     })
 
+    // Update load multiplier for auto-regulation on next session
+    const multiplier = rating === 'easy' ? 1.05 : rating === 'hard' ? 0.95 : 1.0
+    await db.sessions.where('sessionId').equals(state.session.session_id).modify({ loadMultiplier: multiplier })
+
     // Clear crash recovery
     await db.activeWorkout.delete(1)
 

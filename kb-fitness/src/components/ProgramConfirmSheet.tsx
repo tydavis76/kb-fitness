@@ -100,36 +100,6 @@ export function ProgramConfirmSheet({ action, onClose, onConfirm, totalWeeks = 8
         <div style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-0.01em', marginBottom: 10 }}>{c.title}</div>
         <div style={{ fontSize: 13, color: tokens.textMuted, lineHeight: 1.5, marginBottom: 16 }}>{c.body}</div>
 
-        {c.stats && (
-          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-            {c.stats.map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  flex: 1,
-                  padding: 12,
-                  background: tokens.surface2,
-                  borderRadius: 10,
-                  border: `1px solid ${tokens.border}`,
-                }}
-              >
-                <div style={{
-                  fontSize: 10,
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: tokens.textMuted,
-                }}>
-                  {s.label}
-                </div>
-                <div style={{ fontSize: 18, fontWeight: 700, fontVariantNumeric: 'tabular-nums', marginTop: 2 }}>
-                  {s.val}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         {c.picker && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginBottom: 16 }}>
             {Array.from({ length: totalWeeks }, (_, i) => i + 1).map((w) => (

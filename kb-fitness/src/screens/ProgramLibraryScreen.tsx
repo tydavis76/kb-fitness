@@ -16,12 +16,6 @@ const ARCHIVE_ITEMS = [
 ]
 
 function PhaseTimeline({ program }: { program: ProgramRecord }) {
-  const totalWeeksPerPhase = program.phases.map((p) => p.weeks)
-  const totalWeeksBefore = totalWeeksPerPhase.reduce((acc, _w, idx) => {
-    if (idx < program.phaseIndex) return acc + totalWeeksPerPhase[idx]
-    return acc
-  }, 0)
-
   return (
     <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
       {program.phases.map((phase, i) => {

@@ -94,7 +94,7 @@ export function WeekDetailScreen() {
       />
       <div style={{ padding: '0 16px 16px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {DAY_ORDER.map((dayKey, i) => {
+          {DAY_ORDER.map((dayKey) => {
             const sessionId = program.weeklyStructure[dayKey]
             const isRest = !sessionId
             const status = getDayStatus(dayKey, program, absoluteWeek)

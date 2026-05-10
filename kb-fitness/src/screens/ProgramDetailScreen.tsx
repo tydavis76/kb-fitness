@@ -75,7 +75,6 @@ export function ProgramDetailScreen() {
   }
 
   const currentPhase = program.phases[program.phaseIndex]
-  const totalWeeks = program.phases.reduce((a, p) => a + p.weeks, 0)
   const weeksInPhase = program.weekIndex + 1
 
   return (
