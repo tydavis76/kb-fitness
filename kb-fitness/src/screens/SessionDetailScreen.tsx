@@ -182,7 +182,7 @@ export function SessionDetailScreen() {
                 return (
                   <button
                     key={exerciseId}
-                    onClick={() => navigate(`/progress/exercise/${exerciseId}`)}
+                    onClick={() => navigate(`../../exercise/${exerciseId}`)}
                     style={{
                       display: 'flex', alignItems: 'center', padding: '12px 14px', gap: 12,
                       borderTop: i > 0 ? `1px solid ${tokens.borderSoft}` : 'none',

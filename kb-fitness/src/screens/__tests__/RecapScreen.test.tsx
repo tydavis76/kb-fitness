@@ -1,8 +1,23 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import { vi } from 'vitest'
 import { RecapScreen } from '../RecapScreen'
 import { ActiveWorkoutProvider, useActiveWorkout } from '../../context/ActiveWorkoutContext'
 import type { WorkoutSession } from '../../db/types'
+import * as dbModule from '../../db/db'
+
+// Mock the db module
+vi.mock('../../db/db', () => ({
+  db: {
+    activeWorkout: {
+      put: vi.fn().mockResolvedValue(undefined),
+      delete: vi.fn().mockResolvedValue(undefined),
+    },
+    workoutLogs: {
+      add: vi.fn().mockResolvedValue(undefined),
+    },
+  },
+}))
 
 // Mock component to set up the active workout state
 function MockWrapper({ children }: { children: React.ReactNode }) {
@@ -91,5 +106,37 @@ describe('RecapScreen', () => {
     render(<RecapScreen />, { wrapper })
     const doneBtn = screen.getByText(/done/i)
     expect(doneBtn).toBeInTheDocument()
+  })
+
+  test('selecting rating and clicking Done calls completeWorkout with correct rating', async () => {
+    // Clear mocks before test
+    vi.clearAllMocks()
+
+    render(<RecapScreen />, { wrapper })
+
+    // Select "Just right" rating
+    const justRightBtn = screen.getByText('Just right').closest('button') as HTMLElement
+    fireEvent.click(justRightBtn)
+
+    // Verify button is selected
+    expect(justRightBtn).toHaveAttribute('aria-pressed', 'true')
+
+    // Click Done button
+    const doneBtn = screen.getByText(/done/i) as HTMLElement
+    fireEvent.click(doneBtn)
+
+    // Wait for the async completeWorkout to finish
+    await waitFor(() => {
+      // Verify that db.workoutLogs.add was called (which is called by completeWorkout)
+      expect(dbModule.db.workoutLogs.add).toHaveBeenCalled()
+    })
+
+    // Verify the call to db.workoutLogs.add includes the 'on_point' rating
+    // (the 'on_point' id maps to 'Just right' label)
+    const addCall = (dbModule.db.workoutLogs.add as ReturnType<typeof vi.fn>).mock.calls[0]
+    expect(addCall[0]).toMatchObject({
+      rating: 'on_point',
+      notes: '',
+    })
   })
 })

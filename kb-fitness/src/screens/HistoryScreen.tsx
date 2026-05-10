@@ -88,10 +88,11 @@ function computeStreak(logs: WorkoutLog[]): number {
 export function HistoryScreen() {
   const navigate = useNavigate()
 
-  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
-
   const recentLogs = useLiveQuery(
-    () => db.workoutLogs.where('completedAt').above(thirtyDaysAgo).reverse().sortBy('completedAt'),
+    () => {
+      const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000
+      return db.workoutLogs.where('completedAt').above(thirtyDaysAgo).reverse().sortBy('completedAt')
+    },
     [],
     [] as WorkoutLog[]
   )

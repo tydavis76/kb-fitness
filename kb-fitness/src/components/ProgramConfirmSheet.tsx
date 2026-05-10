@@ -13,7 +13,6 @@ interface ConfirmConfig {
   cta: string
   destructive: boolean
   picker?: boolean
-  stats?: Array<{ label: string; val: string }>
 }
 
 const CONFIG: Record<ProgramConfirmAction, ConfirmConfig> = {
@@ -49,14 +48,9 @@ const CONFIG: Record<ProgramConfirmAction, ConfirmConfig> = {
   end: {
     title: 'End Program?',
     accent: tokens.danger,
-    body: "6 of 12 weeks completed. We'll archive your results and show a summary.",
+    body: "We'll archive this program run and return you to the library.",
     cta: 'End program',
     destructive: true,
-    stats: [
-      { label: 'Sessions', val: '23' },
-      { label: 'Volume',   val: '184k lb' },
-      { label: 'PRs',      val: '3' },
-    ],
   },
 }
 
@@ -64,10 +58,11 @@ export interface ProgramConfirmSheetProps {
   action: ProgramConfirmAction | null
   onClose: () => void
   onConfirm?: (action: ProgramConfirmAction, skipWeek?: number) => void
+  totalWeeks?: number
 }
 
-export function ProgramConfirmSheet({ action, onClose, onConfirm }: ProgramConfirmSheetProps) {
-  const [selectedWeek, setSelectedWeek] = useState<number>(7)
+export function ProgramConfirmSheet({ action, onClose, onConfirm, totalWeeks = 8 }: ProgramConfirmSheetProps) {
+  const [selectedWeek, setSelectedWeek] = useState<number>(1)
 
   if (!action) return null
   const c = CONFIG[action]
@@ -77,7 +72,6 @@ export function ProgramConfirmSheet({ action, onClose, onConfirm }: ProgramConfi
     if (onConfirm && action) {
       onConfirm(action, action === 'skip' ? selectedWeek : undefined)
     }
-    onClose()
   }
 
   return (
@@ -138,7 +132,7 @@ export function ProgramConfirmSheet({ action, onClose, onConfirm }: ProgramConfi
 
         {c.picker && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 6, marginBottom: 16 }}>
-            {Array.from({ length: 12 }, (_, i) => i + 1).map((w) => (
+            {Array.from({ length: totalWeeks }, (_, i) => i + 1).map((w) => (
               <button
                 key={w}
                 onClick={() => setSelectedWeek(w)}

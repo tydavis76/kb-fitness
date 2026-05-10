@@ -5,7 +5,7 @@ import { tokens } from '../styles/tokens'
 import { ScreenHeader } from '../components/primitives/ScreenHeader'
 import { Card } from '../components/primitives/Card'
 import { Sectionlabel } from '../components/primitives/Sectionlabel'
-import type { WorkoutLog, LoggedSet } from '../db/types'
+import type { WorkoutLog } from '../db/types'
 
 interface WeeklyVolume {
   weekLabel: string
@@ -27,7 +27,7 @@ function formatShortDate(ts: number): string {
   return `${months[d.getMonth()]} ${d.getDate()}`
 }
 
-function computeWeekLabel(weekStart: number, weekIndex: number): string {
+function computeWeekLabel(weekIndex: number): string {
   return `w${weekIndex + 1}`
 }
 
@@ -64,7 +64,7 @@ function computeWeeklyVolumes(logs: WorkoutLog[], exerciseId: string): WeeklyVol
   }
 
   return allWeeks.map((ws, idx) => ({
-    weekLabel: computeWeekLabel(ws, idx),
+    weekLabel: computeWeekLabel(idx),
     volume: weekMap.get(ws) ?? 0,
   }))
 }
