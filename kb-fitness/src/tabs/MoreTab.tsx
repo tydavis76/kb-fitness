@@ -2,6 +2,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom'
 import { ScreenHeader } from '../components/primitives'
 import { tokens } from '../styles/tokens'
 import { Icon } from '../components/Icon'
+import { SettingsScreen } from '../screens/SettingsScreen'
+import { ExerciseLibraryScreen } from '../screens/ExerciseLibraryScreen'
 
 function MoreHome() {
   const nav = useNavigate()
@@ -37,7 +39,8 @@ export default function MoreTab() {
   return (
     <Routes>
       <Route index element={<MoreHome />} />
-      {/* ExerciseLibrary and Settings wired in Tasks 15-16 */}
+      <Route path="settings" element={<SettingsScreen />} />
+      <Route path="exercises" element={<ExerciseLibraryScreen />} />
     </Routes>
   )
 }
