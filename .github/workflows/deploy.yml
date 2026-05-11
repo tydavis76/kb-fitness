@@ -45,8 +45,8 @@ jobs:
 
       - name: Merge React App
         run: |
-          mkdir -p _site/kb-fitness
-          cp -r kb-fitness/dist/* _site/kb-fitness/
+          sudo mkdir -p _site/kb-fitness
+          sudo cp -r kb-fitness/dist/* _site/kb-fitness/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
