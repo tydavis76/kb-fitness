@@ -26,30 +26,27 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: kb-fitness/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Build kb-fitness
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Add static assets
         run: |
-          cd kb-fitness
-          npm install
-          npm run build
+          cp -r docs dist/ || true
+          cp -r programs dist/ || true
+          cp -r design-system dist/ || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: .
-          destination: ./_site
-
-      - name: Merge React App
-        run: |
-          sudo mkdir -p _site/kb-fitness
-          sudo cp -r kb-fitness/dist/* _site/kb-fitness/
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
 
   deploy:
     environment:
