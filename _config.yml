@@ -1,0 +1,11 @@
+# Jekyll configuration
+exclude:
+  - node_modules
+  - kb-fitness
+  - design-system
+  - .claude
+  - programs
+  - rkc-tracker
+  - CLAUDE.md
+  - package.json
+  - package-lock.json

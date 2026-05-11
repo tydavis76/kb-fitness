@@ -1,3 +1,4 @@
+{% raw %}
 # K&B Fitness PWA — Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
@@ -2679,3 +2680,4 @@ kb-fitness/
 ├── tsconfig.json
 └── package.json
 ```
+{% endraw %}
