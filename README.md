@@ -1,112 +1,73 @@
-# **Workout Programming Schema: Implementation Guide V2**
+# React + TypeScript + Vite
 
-This document serves as the updated technical reference for the Workout Schema. This version (V2) introduces an analytic-friendly "Load" structure to support automated volume tracking and progress dashboards.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## **1\. Core Architecture: The Flattened Block Model**
+Currently, two official plugins are available:
 
-The schema follows a flattened composition model. Each session object is a self-contained unit of data. This ensures that every workout is portable, searchable, and resilient to changes in external global templates.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-### **Hierarchy Levels:**
+## React Compiler
 
-* **Session Metadata:** High-level context (Environment, Tags, Title).  
-* **Blocks:** Logical groupings of exercises (Supersets, Circuits, AMRAPs).  
-* **Exercise Instances:** The specific movement, equipment, and execution rules.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## **2\. Analytic-Friendly Load Mapping**
+## Expanding the ESLint configuration
 
-To support progress tracking and volume calculation (Sets x Reps x Weight), the load field is structured as an object rather than a simple string.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-| Field | Type | Description   |
-| :---- | :---- | :---- |
-| value | Number (Optional) | The numeric portion for math (e.g., 45). Null for non-numeric loads like bands. |
-| unit | String (Optional) | The unit of measure (lbs, kg, damper, level). |
-| label | String (Required) | The human-readable string displayed in the UI (e.g., "45 lbs", "Blue Band"). |
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-## **3\. Specialized Equipment Implementation**
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-| Equipment Type | Load Object Example | Calculation Use Case   |
-| :---- | :---- | :---- |
-| **PowerBlocks** | {value: 50, unit: "lbs", label: "50 lbs"} | Total volume (lbs lifted). |
-| **Resistance Bands** | {value: null, unit: null, label: "Blue Band"} | Track color usage over time. |
-| **Rowing Machine** | {value: 5, unit: "damper", label: "Damper 5"} | Track intensity settings. |
-
-## **4\. High-Precision Protocol Constraints**
-
-For advanced training styles like MSTF, the protocol\_constraints object acts as the execution engine's logic trigger. The tempo field (e.g., "10-2-10-0") should trigger specialized UI timers.
-
-## **5\. Analytics & Progressive Overload**
-
-By capturing the load.value as a number, the application can generate "Progress Charts."
-
-* **Volume Tracking:** Total Volume \= Sets \* Reps \* load.value.  
-* **Intensity Tracking:** Monitor the average load.value for a specific exercise ID over a 6-month period.  
-* **Auto-Regulation:** If a user notes a set was "Easy," the app can increment the load.value by a predefined step (e.g., \+5) for the next session.
-
-## WorkoutSession Schema
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "WorkoutSessionV2",
-  "type": "object",
-  "required": ["session_id", "metadata", "blocks"],
-  "properties": {
-    "session_id": { "type": "string" },
-    "metadata": {
-      "type": "object",
-      "required": ["title"],
-      "properties": {
-        "title": { "type": "string" },
-        "environment": { "enum": ["Home", "Gym", "Travel"] },
-        "tags": { "type": "array", "items": { "type": "string" } }
-      }
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
     },
-    "blocks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["type", "exercises"],
-        "properties": {
-          "type": { "enum": ["straight", "superset", "circuit", "amrap", "ladder"] },
-          "rounds": { "type": "integer", "default": 1 },
-          "exercises": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["exercise_id", "name", "prescription"],
-              "properties": {
-                "exercise_id": { "type": "string" },
-                "name": { "type": "string" },
-                "prescription": {
-                  "type": "object",
-                  "required": ["type", "target", "load"],
-                  "properties": {
-                    "type": { "enum": ["reps", "time", "distance", "failure"] },
-                    "target": { "oneOf": [{ "type": "string" }, { "type": "number" }] },
-                    "load": {
-                      "type": "object",
-                      "required": ["label"],
-                      "properties": {
-                        "value": { "type": ["number", "null"], "description": "Numeric weight for math." },
-                        "unit": { "type": ["string", "null"], "description": "lbs, kg, damper, etc." },
-                        "label": { "type": "string", "description": "The UI string (e.g., 'Blue Band')." }
-                      }
-                    }
-                  }
-                },
-                "protocol_constraints": {
-                  "type": "object",
-                  "properties": {
-                    "tempo": { "type": "string", "pattern": "^\\d+-\\d+-\\d+-\\d+$" },
-                    "cues": { "type": "array", "items": { "type": "string" } }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
