@@ -5,7 +5,6 @@ exclude:
   - design-system
   - .claude
   - programs
-  - rkc-tracker
   - CLAUDE.md
   - package.json
   - package-lock.json
