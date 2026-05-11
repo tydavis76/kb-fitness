@@ -1,5 +1,5 @@
 import { db } from './db'
-import programData from '../../../programs/8-week-kettlebell-program.json'
+import programData from '../../programs/8-week-kettlebell-program.json'
 import type { ProgramRecord, SessionRecord, SettingsRecord } from './types'
 
 export async function seedIfNeeded(): Promise<void> {
