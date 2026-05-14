@@ -193,7 +193,7 @@ export function ActiveAmrap({
                 color: tokens.textMuted,
               }}
             >
-              1 round
+              Round {rounds + 1} in progress
             </div>
             <div
               style={{
@@ -210,7 +210,16 @@ export function ActiveAmrap({
             return (
               <button
                 key={i}
-                onClick={() => setPartial(done ? i : i + 1)}
+                onClick={() => {
+                  if (done) {
+                    setPartial(i)
+                  } else if (i + 1 === exercises.length) {
+                    setRounds(r => r + 1)
+                    setPartial(0)
+                  } else {
+                    setPartial(i + 1)
+                  }
+                }}
                 style={{
                   width: '100%',
                   padding: '12px 14px',
