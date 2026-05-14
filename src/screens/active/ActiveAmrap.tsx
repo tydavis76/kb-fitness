@@ -82,77 +82,95 @@ export function ActiveAmrap({
           />
         </div>
 
-        {/* Round counter */}
+        {/* Tap-zone round counter */}
         <div
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            setRounds(r => r + 1)
+            setPartial(0)
+          }}
+          onKeyDown={e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              setRounds(r => r + 1)
+              setPartial(0)
+            }
+          }}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 14,
-            margin: '14px 0',
+            position: 'relative',
+            margin: '12px 0',
+            background: 'rgba(245,158,11,0.07)',
+            border: '2px solid rgba(245,158,11,0.35)',
+            borderRadius: 20,
+            padding: '14px 16px 12px',
+            textAlign: 'center',
+            cursor: 'pointer',
+            width: '100%',
+            color: tokens.text,
           }}
         >
-          <button
-            onClick={() => setRounds(Math.max(0, rounds - 1))}
+          <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 999,
-              background: tokens.surface2,
-              border: `1px solid ${tokens.border}`,
-              color: tokens.text,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              color: tokens.textMuted,
+              marginBottom: 4,
             }}
           >
-            <Icon name="minus" size={18} />
-          </button>
-          <div style={{ textAlign: 'center', minWidth: 100 }}>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: tokens.textMuted,
-              }}
-            >
-              Rounds
-            </div>
-            <div
-              style={{
-                fontSize: 36,
-                fontWeight: 700,
-                fontVariantNumeric: 'tabular-nums',
-                color: tokens.accent,
-                lineHeight: 1,
-                marginTop: 2,
-              }}
-            >
-              {rounds}
-              <span style={{ fontSize: 14, color: tokens.textMuted, fontWeight: 500 }}>
-                +{partial}
-              </span>
-            </div>
+            Rounds — tap to add
           </div>
-          <button
-            onClick={() => setRounds(rounds + 1)}
+          <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 999,
-              background: tokens.accent,
-              border: 'none',
-              color: tokens.bg,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              fontSize: 72,
+              fontWeight: 800,
+              color: tokens.accent,
+              lineHeight: 1,
+              fontVariantNumeric: 'tabular-nums',
             }}
           >
-            <Icon name="plus" size={18} />
+            {rounds}
+          </div>
+          {partial > 0 && (
+            <div
+              style={{
+                fontSize: 13,
+                color: tokens.textDim,
+                marginTop: 4,
+                fontVariantNumeric: 'tabular-nums',
+              }}
+            >
+              +{' '}
+              <span style={{ color: tokens.textMuted }}>
+                {partial} of {exercises.length}
+              </span>{' '}
+              exercises
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={e => {
+              e.stopPropagation()
+              setRounds(r => Math.max(0, r - 1))
+              setPartial(0)
+            }}
+            style={{
+              position: 'absolute',
+              top: 8,
+              right: 12,
+              fontSize: 11,
+              color: tokens.textDim,
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              fontFamily: 'inherit',
+            }}
+          >
+            −1
           </button>
         </div>
 
@@ -250,7 +268,7 @@ export function ActiveAmrap({
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 64,
           padding: 16,
           background: tokens.bg,
           borderTop: `1px solid ${tokens.border}`,
