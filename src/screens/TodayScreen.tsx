@@ -10,6 +10,7 @@ import { Chip } from '../components/primitives/Chip'
 import { BlockPill } from '../components/primitives/BlockPill'
 import { Icon } from '../components/Icon'
 import { ProgramEmptyToday } from '../components/ProgramEmptyToday'
+import { useActiveWorkout } from '../context/ActiveWorkoutContext'
 
 const DAY_KEYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 const DAY_2: Record<string, string> = {
@@ -126,6 +127,7 @@ export function WeekStrip({ weeklyStructure, phaseId, todayKey, selectedKey, don
 
 export function TodayScreen() {
   const navigate = useNavigate()
+  const { startWorkout } = useActiveWorkout()
   const today = new Date()
   const dayOfWeekKey = getDayOfWeekKey(today)
 
@@ -157,6 +159,12 @@ export function TodayScreen() {
 
   const doneSessionIds = new Set(workoutLogs?.map(l => l.sessionId) ?? [])
   const isSelectedDone = selectedSessionId ? doneSessionIds.has(selectedSessionId) : false; void isSelectedDone
+
+  const handleStart = async () => {
+    if (!session?.template) return
+    await startWorkout(session.template)
+    navigate('active')
+  }
 
   const weekStrip = (
     <WeekStrip
@@ -271,8 +279,7 @@ export function TodayScreen() {
           </div>
 
           <div style={{ padding: 16, paddingTop: 4 }}>
-            <Btn variant="primary" size="lg" full icon="play"
-              onClick={() => navigate('preview', { state: { sessionId: selectedSessionId, session } })}>
+            <Btn variant="primary" size="lg" full icon="play" onClick={handleStart}>
               Start Workout
             </Btn>
           </div>
