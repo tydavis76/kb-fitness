@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { useNavigate } from 'react-router-dom'
 import { db } from '../db/db'
@@ -131,33 +132,40 @@ export function TodayScreen() {
   const program = useLiveQuery(() => db.programs.where('status').equals('active').first())
   const workoutLogs = useLiveQuery(() => db.workoutLogs.toArray(), [])
 
-  const baseSessionId = program?.weeklyStructure?.[dayOfWeekKey]
+  const [selectedDayKey, setSelectedDayKey] = useState(dayOfWeekKey)
+
+  const todayIndex     = DAY_KEYS.indexOf(dayOfWeekKey)
+  const selectedIndex  = DAY_KEYS.indexOf(selectedDayKey)
+  const isToday        = selectedDayKey === dayOfWeekKey; void isToday
+  const isPast         = selectedIndex < todayIndex; void isPast
+  const isFuture       = selectedIndex > todayIndex; void isFuture
+
   const currentPhaseId = program?.phases[program?.phaseIndex ?? 0]?.id ?? ''
-  const sessionId = baseSessionId && currentPhaseId && !baseSessionId.startsWith('rest')
-    ? `${baseSessionId}_${currentPhaseId}`
+
+  const selectedBaseId = program?.weeklyStructure?.[selectedDayKey]
+  const isRestDay = !selectedBaseId || selectedBaseId.startsWith('rest')
+  const selectedSessionId = selectedBaseId && currentPhaseId && !isRestDay
+    ? `${selectedBaseId}_${currentPhaseId}`
     : undefined
 
   const session = useLiveQuery(() =>
-    sessionId ? db.sessions.where('sessionId').equals(sessionId).first() : undefined,
-    [sessionId]
+    selectedSessionId ? db.sessions.where('sessionId').equals(selectedSessionId).first() : undefined,
+    [selectedSessionId]
   )
 
   if (!program) return <ProgramEmptyToday />
 
-  const isRestDay = !baseSessionId || baseSessionId.startsWith('rest')
   const doneSessionIds = new Set(workoutLogs?.map(l => l.sessionId) ?? [])
-
-  const handleSelectSession = (sid: string) => {
-    navigate('preview', { state: { sessionId: sid } })
-  }
+  const isSelectedDone = selectedSessionId ? doneSessionIds.has(selectedSessionId) : false; void isSelectedDone
 
   const weekStrip = (
     <WeekStrip
       weeklyStructure={program.weeklyStructure}
       phaseId={currentPhaseId}
       todayKey={dayOfWeekKey}
+      selectedKey={selectedDayKey}
       doneSessionIds={doneSessionIds}
-      onSelect={handleSelectSession}
+      onSelect={(dayKey) => setSelectedDayKey(dayKey)}
     />
   )
 
@@ -264,7 +272,7 @@ export function TodayScreen() {
 
           <div style={{ padding: 16, paddingTop: 4 }}>
             <Btn variant="primary" size="lg" full icon="play"
-              onClick={() => navigate('preview', { state: { sessionId, session } })}>
+              onClick={() => navigate('preview', { state: { sessionId: selectedSessionId, session } })}>
               Start Workout
             </Btn>
           </div>
