@@ -22,6 +22,15 @@ function getDayOfWeekKey(date: Date): string {
   return DAY_KEYS[date.getDay() === 0 ? 6 : date.getDay() - 1]
 }
 
+function getDateForDayKey(today: Date, dayKey: string): Date {
+  const todayIndex    = today.getDay() === 0 ? 6 : today.getDay() - 1
+  const targetIndex   = DAY_KEYS.indexOf(dayKey)
+  const date          = new Date(today)
+  date.setDate(today.getDate() + (targetIndex - todayIndex))
+  date.setHours(12, 0, 0, 0)
+  return date
+}
+
 function formatDate(date: Date): string {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -138,9 +147,9 @@ export function TodayScreen() {
 
   const todayIndex     = DAY_KEYS.indexOf(dayOfWeekKey)
   const selectedIndex  = DAY_KEYS.indexOf(selectedDayKey)
-  const isToday        = selectedDayKey === dayOfWeekKey; void isToday
-  const isPast         = selectedIndex < todayIndex; void isPast
-  const isFuture       = selectedIndex > todayIndex; void isFuture
+  const isToday        = selectedDayKey === dayOfWeekKey
+  const isPast         = selectedIndex < todayIndex
+  const isFuture       = selectedIndex > todayIndex
 
   const currentPhaseId = program?.phases[program?.phaseIndex ?? 0]?.id ?? ''
 
@@ -158,12 +167,27 @@ export function TodayScreen() {
   if (!program) return <ProgramEmptyToday />
 
   const doneSessionIds = new Set(workoutLogs?.map(l => l.sessionId) ?? [])
-  const isSelectedDone = selectedSessionId ? doneSessionIds.has(selectedSessionId) : false; void isSelectedDone
+  const isSelectedDone = selectedSessionId ? doneSessionIds.has(selectedSessionId) : false
 
   const handleStart = async () => {
     if (!session?.template) return
     await startWorkout(session.template)
     navigate('active')
+  }
+
+  const handleSkip = async () => {
+    if (!selectedSessionId || !program?.programId) return
+    const skippedDate = getDateForDayKey(today, selectedDayKey)
+    await db.workoutLogs.add({
+      sessionId:      selectedSessionId,
+      programId:      program.programId,
+      completedAt:    skippedDate.getTime(),
+      durationSec:    0,
+      rating:         'on_point',
+      notes:          '',
+      totalVolumeKg:  null,
+      sets:           [],
+    })
   }
 
   const weekStrip = (
@@ -278,10 +302,17 @@ export function TodayScreen() {
             ))}
           </div>
 
-          <div style={{ padding: 16, paddingTop: 4 }}>
-            <Btn variant="primary" size="lg" full icon="play" onClick={handleStart}>
-              Start Workout
-            </Btn>
+          <div style={{ padding: 16, paddingTop: 4, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {!isSelectedDone && !isRestDay && (
+              <Btn variant="primary" size="lg" full icon="play" onClick={handleStart}>
+                {isToday ? 'Start Workout' : isFuture ? 'Start Early' : 'Start Anyway'}
+              </Btn>
+            )}
+            {isPast && !isSelectedDone && !isRestDay && (
+              <Btn variant="ghost" size="lg" full onClick={handleSkip}>
+                Mark Skipped
+              </Btn>
+            )}
           </div>
         </Card>
       </div>
