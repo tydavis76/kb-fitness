@@ -144,6 +144,7 @@ export function TodayScreen() {
   const workoutLogs = useLiveQuery(() => db.workoutLogs.toArray(), [])
 
   const [selectedDayKey, setSelectedDayKey] = useState(dayOfWeekKey)
+  const [isSkipping, setIsSkipping] = useState(false)
 
   const todayIndex     = DAY_KEYS.indexOf(dayOfWeekKey)
   const selectedIndex  = DAY_KEYS.indexOf(selectedDayKey)
@@ -176,18 +177,23 @@ export function TodayScreen() {
   }
 
   const handleSkip = async () => {
-    if (!selectedSessionId || !program?.programId) return
-    const skippedDate = getDateForDayKey(today, selectedDayKey)
-    await db.workoutLogs.add({
-      sessionId:      selectedSessionId,
-      programId:      program.programId,
-      completedAt:    skippedDate.getTime(),
-      durationSec:    0,
-      rating:         'on_point',
-      notes:          '',
-      totalVolumeKg:  null,
-      sets:           [],
-    })
+    if (!selectedSessionId || !program?.programId || isSkipping) return
+    setIsSkipping(true)
+    try {
+      const skippedDate = getDateForDayKey(today, selectedDayKey)
+      await db.workoutLogs.add({
+        sessionId:     selectedSessionId,
+        programId:     program.programId,
+        completedAt:   skippedDate.getTime(),
+        durationSec:   0,
+        rating:        'on_point',
+        notes:         '',
+        totalVolumeKg: null,
+        sets:          [],
+      })
+    } finally {
+      setIsSkipping(false)
+    }
   }
 
   const weekStrip = (
@@ -309,7 +315,7 @@ export function TodayScreen() {
               </Btn>
             )}
             {isPast && !isSelectedDone && !isRestDay && (
-              <Btn variant="ghost" size="lg" full onClick={handleSkip}>
+              <Btn variant="ghost" size="lg" full onClick={handleSkip} disabled={isSkipping}>
                 Mark Skipped
               </Btn>
             )}
