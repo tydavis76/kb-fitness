@@ -10,20 +10,21 @@ import { BlockPill } from '../components/primitives/BlockPill'
 import { Icon } from '../components/Icon'
 import { ProgramEmptyToday } from '../components/ProgramEmptyToday'
 
+const DAY_KEYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+const DAY_2: Record<string, string> = {
+  monday: 'Mo', tuesday: 'Tu', wednesday: 'We', thursday: 'Th',
+  friday: 'Fr', saturday: 'Sa', sunday: 'Su',
+}
+
 function getDayOfWeekKey(date: Date): string {
-  const dayIndex = date.getDay()
-  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-  return days[dayIndex]
+  return DAY_KEYS[date.getDay() === 0 ? 6 : date.getDay() - 1]
 }
 
 function formatDate(date: Date): string {
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                      'July', 'August', 'September', 'October', 'November', 'December']
-  const day = dayNames[date.getDay()]
-  const month = monthNames[date.getMonth()]
-  const dateNum = date.getDate()
-  return `${day}, ${month} ${dateNum}`
+    'July', 'August', 'September', 'October', 'November', 'December']
+  return `${dayNames[date.getDay()]}, ${monthNames[date.getMonth()]} ${date.getDate()}`
 }
 
 function calculateEstimatedDuration(blocks: any[]): number {
@@ -32,12 +33,11 @@ function calculateEstimatedDuration(blocks: any[]): number {
     if (block.duration_sec) {
       totalSec += block.duration_sec
     } else {
-      // Rough estimate: 3 min per exercise + rest time
       const exercisesCount = block.exercises?.length || 1
       totalSec += exercisesCount * 180 + (block.rest_sec || 0) * (block.rounds || 1)
     }
   }
-  return Math.round(totalSec / 60) // Return minutes
+  return Math.round(totalSec / 60)
 }
 
 function calculateTotalVolume(blocks: any[]): number {
@@ -56,34 +56,129 @@ function calculateTotalVolume(blocks: any[]): number {
   return Math.round(totalLb)
 }
 
+interface WeekStripProps {
+  weeklyStructure: Record<string, string>
+  phaseId: string
+  todayKey: string
+  selectedKey: string
+  doneSessionIds: Set<string>
+  onSelect: (dayKey: string) => void
+}
+
+export function WeekStrip({ weeklyStructure, phaseId, todayKey, selectedKey, doneSessionIds, onSelect }: WeekStripProps) {
+  return (
+    <div style={{ display: 'flex', gap: 4, padding: '10px 16px 6px' }}>
+      {DAY_KEYS.map(dayKey => {
+        const baseId = weeklyStructure[dayKey]
+        const isRest = !baseId || baseId.startsWith('rest')
+        const isToday = dayKey === todayKey
+        const isSelected = dayKey === selectedKey
+        const fullSessionId = baseId && !isRest ? `${baseId}_${phaseId}` : null
+        const isDone = fullSessionId ? doneSessionIds.has(fullSessionId) : false
+
+        return (
+          <button
+            key={dayKey}
+            onClick={() => onSelect(dayKey)}
+            disabled={isRest}
+            style={{
+              flex: 1,
+              padding: '7px 2px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 5,
+              borderRadius: 10,
+              border: `1px solid ${isSelected ? tokens.primary : isToday ? tokens.border : 'transparent'}`,
+              background: isSelected && !isRest ? tokens.workBg : 'transparent',
+              cursor: isRest ? 'default' : 'pointer',
+              opacity: isRest ? 0.4 : 1,
+            }}
+          >
+            <div style={{
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+              color: isSelected ? tokens.primary : isToday ? tokens.accent : tokens.textMuted,
+            }}>
+              {DAY_2[dayKey]}
+            </div>
+            <div style={{
+              width: 7,
+              height: 7,
+              borderRadius: '50%',
+              background: isDone
+                ? tokens.primary
+                : isRest
+                  ? 'transparent'
+                  : isToday || isSelected
+                    ? tokens.primary
+                    : tokens.surface3,
+              border: isDone || isRest ? 'none' : `1.5px solid ${isToday || isSelected ? tokens.primary : tokens.border}`,
+            }} />
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 export function TodayScreen() {
   const navigate = useNavigate()
   const today = new Date()
   const dayOfWeekKey = getDayOfWeekKey(today)
 
-  // Query active program
-  const program = useLiveQuery(() =>
-    db.programs.where('status').equals('active').first()
-  )
+  const program = useLiveQuery(() => db.programs.where('status').equals('active').first())
+  const workoutLogs = useLiveQuery(() => db.workoutLogs.toArray(), [])
 
-  // Determine today's session ID from weekly structure
-  const sessionId = program?.weeklyStructure?.[dayOfWeekKey]
+  const baseSessionId = program?.weeklyStructure?.[dayOfWeekKey]
+  const currentPhaseId = program?.phases[program?.phaseIndex ?? 0]?.id ?? ''
+  const sessionId = baseSessionId && currentPhaseId && !baseSessionId.startsWith('rest')
+    ? `${baseSessionId}_${currentPhaseId}`
+    : undefined
 
-  // Query today's session
   const session = useLiveQuery(() =>
-    sessionId ? db.sessions.where('sessionId').equals(sessionId).first() : undefined
+    sessionId ? db.sessions.where('sessionId').equals(sessionId).first() : undefined,
+    [sessionId]
   )
 
-  if (!program) {
-    return <ProgramEmptyToday />
+  if (!program) return <ProgramEmptyToday />
+
+  const isRestDay = !baseSessionId || baseSessionId.startsWith('rest')
+  const doneSessionIds = new Set(workoutLogs?.map(l => l.sessionId) ?? [])
+
+  const handleSelectSession = (sid: string) => {
+    navigate('preview', { state: { sessionId: sid } })
   }
 
+  const weekStrip = (
+    <WeekStrip
+      weeklyStructure={program.weeklyStructure}
+      phaseId={currentPhaseId}
+      todayKey={dayOfWeekKey}
+      doneSessionIds={doneSessionIds}
+      onSelect={handleSelectSession}
+    />
+  )
+
   const template = session?.template
+
   if (!template) {
     return (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
         <ScreenHeader title="Today" subtitle={formatDate(today)} />
-        <ProgramEmptyToday />
+        {weekStrip}
+        {isRestDay ? (
+          <div style={{ padding: '40px 24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+            <Icon name="moon" size={40} color={tokens.textMuted} />
+            <div style={{ fontSize: 20, fontWeight: 700, color: tokens.text }}>Recovery Day</div>
+            <div style={{ fontSize: 14, color: tokens.textMuted, textAlign: 'center', lineHeight: 1.5 }}>
+              The schedule is a guide — tap any workout above to start it whenever you're ready.
+            </div>
+          </div>
+        ) : (
+          <ProgramEmptyToday />
+        )}
       </div>
     )
   }
@@ -92,106 +187,65 @@ export function TodayScreen() {
   const estimatedMinutes = calculateEstimatedDuration(blocks)
   const totalVolume = calculateTotalVolume(blocks)
 
-  // Build context string: Phase X · Week Y · Day Z
   const phaseIndex = program.phaseIndex ?? 0
   const weekIndex = program.weekIndex ?? 0
   const dayIndex = program.dayIndex ?? 0
   const contextString = `Phase ${phaseIndex + 1} · Week ${weekIndex + 1} · Day ${dayIndex + 1}`
 
-  // Check for auto-regulation hint
   const loadMultiplier = session?.loadMultiplier
   const showAutoRegulation = loadMultiplier !== undefined && loadMultiplier !== 1.0
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
-      <ScreenHeader
-        title="Today"
-        subtitle={formatDate(today)}
-      />
-      <div style={{ padding: '0 16px 16px' }}>
-        {/* Auto-regulation banner */}
+      <ScreenHeader title="Today" subtitle={formatDate(today)} />
+      {weekStrip}
+      <div style={{ padding: '8px 16px 16px' }}>
         {showAutoRegulation && (
           <div style={{
-            padding: '12px 14px',
-            marginBottom: 12,
-            background: tokens.accentBg,
-            border: `1px solid ${tokens.accentBg}`,
-            borderLeft: `3px solid ${tokens.accent}`,
-            borderRadius: 12,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 10,
+            padding: '12px 14px', marginBottom: 12,
+            background: tokens.accentBg, borderLeft: `3px solid ${tokens.accent}`,
+            borderRadius: 12, display: 'flex', alignItems: 'center', gap: 10,
           }}>
             <Icon name="wand" size={16} color={tokens.accent} />
-            <div style={{
-              fontSize: 13,
-              fontWeight: 500,
-              color: tokens.text,
-              flex: 1,
-            }}>
-              {loadMultiplier > 1
+            <div style={{ fontSize: 13, fontWeight: 500, color: tokens.text, flex: 1 }}>
+              {loadMultiplier! > 1
                 ? '↑5% loads today — based on your last Easy session'
                 : '↓5% loads today — based on your last Hard session'}
             </div>
           </div>
         )}
 
-        {/* Hero session card */}
         <Card elevated style={{ padding: 0, overflow: 'hidden', marginBottom: 12 }}>
           <div style={{ padding: 18, borderBottom: `1px solid ${tokens.borderSoft}` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <Chip tone="accent" size="sm">{contextString}</Chip>
-              {template.metadata?.environment && (
-                <Chip size="sm">{template.metadata.environment}</Chip>
-              )}
+              {template.metadata?.environment && <Chip size="sm">{template.metadata.environment}</Chip>}
             </div>
-            <div style={{
-              fontSize: 30,
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              marginBottom: 6,
-              color: tokens.text,
-            }}>
+            <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 6, color: tokens.text }}>
               {template.metadata?.title}
             </div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-              color: tokens.textMuted,
-              fontSize: 13,
-            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, color: tokens.textMuted, fontSize: 13 }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                <Icon name="timer" size={14} />
-                {estimatedMinutes} min
+                <Icon name="timer" size={14} />{estimatedMinutes} min
               </span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                <Icon name="dumbbell" size={14} />
-                {blocks.length} blocks
+                <Icon name="dumbbell" size={14} />{blocks.length} blocks
               </span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                <Icon name="flame" size={14} />
-                ~{totalVolume.toLocaleString()} lb
-              </span>
+              {totalVolume > 0 && (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  <Icon name="flame" size={14} />~{totalVolume.toLocaleString()} lb
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Block preview rail */}
           <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {blocks.map((block, i) => (
+            {blocks.map((block: any, i: number) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 7,
-                  background: tokens.surface3,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: tokens.text,
+                  width: 26, height: 26, borderRadius: 7, background: tokens.surface3,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 12, fontWeight: 700, color: tokens.text,
                 }}>
                   {i + 1}
                 </div>
@@ -208,15 +262,9 @@ export function TodayScreen() {
             ))}
           </div>
 
-          {/* Start button */}
-          <div style={{ padding: 16, paddingTop: 4, display: 'flex', gap: 8 }}>
-            <Btn
-              variant="primary"
-              size="lg"
-              full
-              icon="play"
-              onClick={() => navigate('preview', { state: { sessionId, session } })}
-            >
+          <div style={{ padding: 16, paddingTop: 4 }}>
+            <Btn variant="primary" size="lg" full icon="play"
+              onClick={() => navigate('preview', { state: { sessionId, session } })}>
               Start Workout
             </Btn>
           </div>
