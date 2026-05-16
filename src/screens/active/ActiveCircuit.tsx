@@ -1,12 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { WorkoutBlock } from '@/db/types'
 import { useActiveWorkout } from '@/context/ActiveWorkoutContext'
 import { Icon } from '@/components/Icon'
 import { Btn } from '@/components/primitives/Btn'
 import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
+import { CircularTimer } from '@/components/CircularTimer'
 import { ActiveTopBar } from './ActiveTopBar'
+import { useCountdown } from '@/hooks/useCountdown'
+import { useLeadIn } from '@/hooks/useLeadIn'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '@/db/db'
 import { tokens } from '@/styles/tokens'
+
+function ExerciseTimer({ durationSec, leadIn, onComplete }: { durationSec: number; leadIn: number; onComplete: () => void }) {
+  const timer = useCountdown({ duration: durationSec, leadIn, onComplete })
+  useEffect(() => { timer.start() }, [])
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0', position: 'relative' }}>
+      <CircularTimer remaining={timer.remaining} total={timer.total} leadCount={timer.leadCount} phase={timer.phase} size={88} />
+    </div>
+  )
+}
 
 interface ActiveCircuitProps {
   block: WorkoutBlock
@@ -20,12 +35,17 @@ export function ActiveCircuit({
   onNextBlock,
 }: ActiveCircuitProps) {
   const { logSet } = useActiveWorkout()
+  const [leadIn] = useLeadIn()
+  const settings = useLiveQuery(() => db.settings.get(1))
   const [round, setRound] = useState(1)
   const [exerciseIdx, setExerciseIdx] = useState(0)
   const [showRest, setShowRest] = useState(false)
 
   const rounds = block.rounds || 1
   const exercises = block.exercises
+  const currentEx = exercises[exerciseIdx]
+  const isCurrentTimeBased = currentEx?.prescription.type === 'time'
+  const effectiveRestSec = block.rest_sec ?? settings?.restDefaults?.circuit ?? 60
 
   if (exercises.length === 0) return null
 
@@ -44,7 +64,7 @@ export function ActiveCircuit({
       if (round >= rounds) {
         onNextBlock()
       } else {
-        if ((block.rest_sec ?? 0) > 0) {
+        if (effectiveRestSec > 0) {
           setShowRest(true)
         } else {
           setRound(round + 1)
@@ -67,7 +87,7 @@ export function ActiveCircuit({
   }
 
   if (showRest) {
-    return <RestTimer durationSec={block.rest_sec ?? 60} onDone={handleRestDone} />
+    return <RestTimer durationSec={effectiveRestSec} onDone={handleRestDone} />
   }
 
   const progressPercent = (round / rounds) * 100
@@ -151,7 +171,7 @@ export function ActiveCircuit({
               {round} of {rounds}
             </div>
             <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 2 }}>
-              {block.rest_sec || 60}s rest between rounds
+              {effectiveRestSec}s rest between rounds
             </div>
           </div>
         </div>
@@ -211,6 +231,14 @@ export function ActiveCircuit({
                   {targetValue}
                   {ex.prescription.type === 'time' ? 's' : ' reps'} · {ex.prescription.load.label}
                 </div>
+                {active && ex.prescription.type === 'time' && (
+                  <ExerciseTimer
+                    key={`${round}-${idx}`}
+                    durationSec={targetValue}
+                    leadIn={leadIn}
+                    onComplete={handleDoneExercise}
+                  />
+                )}
               </div>
               {active && (
                 <Chip tone="work" size="sm">
@@ -227,20 +255,20 @@ export function ActiveCircuit({
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 64,
           padding: 16,
           background: tokens.bg,
           borderTop: `1px solid ${tokens.border}`,
         }}
       >
         <Btn
-          variant="primary"
+          variant={isCurrentTimeBased ? 'secondary' : 'primary'}
           size="lg"
           onClick={handleDoneExercise}
           style={{ width: '100%' }}
-          icon="check"
+          icon={isCurrentTimeBased ? 'arrow-right' : 'check'}
         >
-          Done · Next station
+          {isCurrentTimeBased ? 'Skip' : 'Next'}
         </Btn>
       </div>
     </div>

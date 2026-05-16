@@ -249,7 +249,7 @@ export function ActiveCarry({
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 64,
           padding: 16,
           background: tokens.bg,
           borderTop: `1px solid ${tokens.border}`,

@@ -52,6 +52,7 @@
       "blocks": [
         {
           "type": "superset",
+          "name": "Squat & Row Superset",
           "rounds": 3,
           "exercises": [
             {
@@ -96,10 +97,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
+          "name": "Anterior Lunge",
           "rounds": 3,
           "exercises": [
             {
@@ -122,10 +125,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
+          "name": "Clean & Press",
           "rounds": 3,
           "exercises": [
             {
@@ -149,10 +154,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "circuit",
+          "name": "Isometric Finisher",
           "rounds": 1,
           "exercises": [
             {
@@ -214,10 +221,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
+          "name": "Swing Finisher",
           "rounds": 1,
           "exercises": [
             {
@@ -240,7 +249,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         }
       ]
     },
@@ -259,6 +269,7 @@
       "blocks": [
         {
           "type": "circuit",
+          "name": "Anaerobic Intervals",
           "rounds": 4,
           "exercises": [
             {
@@ -339,7 +350,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         }
       ]
     },
@@ -357,6 +369,7 @@
       "blocks": [
         {
           "type": "straight",
+          "name": "Sumo Deadlift",
           "rounds": 3,
           "exercises": [
             {
@@ -380,10 +393,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
+          "name": "Floor Press",
           "rounds": 3,
           "exercises": [
             {
@@ -407,10 +422,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
+          "name": "Offset Lunge",
           "rounds": 3,
           "exercises": [
             {
@@ -432,10 +449,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
+          "name": "Core Row",
           "rounds": 3,
           "exercises": [
             {
@@ -459,10 +478,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "amrap",
+          "name": "Swing EMOM",
           "rounds": 1,
           "exercises": [
             {
@@ -485,7 +506,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 0
         }
       ]
     },
@@ -504,6 +526,7 @@
       "blocks": [
         {
           "type": "circuit",
+          "name": "Aerobic Circuit",
           "rounds": 3,
           "exercises": [
             {
@@ -661,7 +684,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         }
       ]
     },
@@ -680,6 +704,7 @@
       "blocks": [
         {
           "type": "circuit",
+          "name": "KB Complex",
           "rounds": 3,
           "exercises": [
             {
@@ -756,10 +781,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
+          "name": "Bulgarian Split Squat",
           "rounds": 3,
           "exercises": [
             {
@@ -783,10 +810,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
+          "name": "Bench Press",
           "rounds": 3,
           "exercises": [
             {
@@ -808,10 +837,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "amrap",
+          "name": "RDL Density",
           "rounds": 1,
           "exercises": [
             {
@@ -851,10 +882,12 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 0
         },
         {
           "type": "amrap",
+          "name": "Goblet Squat Density",
           "rounds": 1,
           "exercises": [
             {
@@ -896,7 +929,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 0
         }
       ]
     },
@@ -915,6 +949,7 @@
       "blocks": [
         {
           "type": "superset",
+          "name": "Squat Contrast Superset",
           "rounds": 3,
           "exercises": [
             {
@@ -954,7 +989,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "superset",
@@ -1017,7 +1053,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "superset",
@@ -1079,7 +1116,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
@@ -1103,7 +1141,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         }
       ]
     },
@@ -1179,7 +1218,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "circuit",
@@ -1241,7 +1281,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "circuit",
@@ -1302,7 +1343,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         }
       ]
     },
@@ -1361,7 +1403,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
@@ -1386,7 +1429,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
@@ -1412,7 +1456,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "straight",
@@ -1438,7 +1483,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "circuit",
@@ -1534,7 +1580,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         }
       ]
     },
@@ -1673,7 +1720,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         }
       ]
     },
@@ -1732,7 +1780,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 60
         },
         {
           "type": "straight",
@@ -1758,7 +1807,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 90
         },
         {
           "type": "amrap",
@@ -1802,7 +1852,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 0
         },
         {
           "type": "amrap",
@@ -1846,7 +1897,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "rest_sec": 0
         }
       ]
     }

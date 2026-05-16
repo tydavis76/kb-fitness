@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useCallback } from 'react'
-import type { WorkoutSession, LoggedSet } from '../db/types'
+import type { WorkoutSession, LoggedSet, LoadObject } from '../db/types'
 import { db } from '../db/db'
 
 /**
@@ -28,6 +28,7 @@ type WorkoutAction =
   | { type: 'RESUME' }
   | { type: 'COMPLETE' }
   | { type: 'RESET' }
+  | { type: 'UPDATE_LOAD'; exerciseId: string; load: LoadObject }
 
 /**
  * Context value type
@@ -40,6 +41,7 @@ interface ActiveWorkoutContextValue {
   pauseWorkout: () => void
   resumeWorkout: () => void
   completeWorkout: (rating: 'easy' | 'on_point' | 'hard' | 'failed', notes?: string) => Promise<void>
+  updateLoad: (exerciseId: string, load: LoadObject) => Promise<void>
 }
 
 const ActiveWorkoutContext = createContext<ActiveWorkoutContextValue | undefined>(undefined)
@@ -123,6 +125,18 @@ function workoutReducer(state: InternalWorkoutState, action: WorkoutAction): Int
     }
     case 'RESET': {
       return initialState
+    }
+    case 'UPDATE_LOAD': {
+      if (!state.session) return state
+      const updatedBlocks = state.session.blocks.map(block => ({
+        ...block,
+        exercises: block.exercises.map(ex =>
+          ex.exercise_id === action.exerciseId
+            ? { ...ex, prescription: { ...ex.prescription, load: action.load } }
+            : ex
+        ),
+      }))
+      return { ...state, session: { ...state.session, blocks: updatedBlocks } }
     }
     default:
       return state
@@ -217,6 +231,25 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
     dispatch({ type: 'COMPLETE' })
   }, [state.session, state.startedAt, state.blockStates])
 
+  const updateLoad = useCallback(async (exerciseId: string, load: LoadObject) => {
+    dispatch({ type: 'UPDATE_LOAD', exerciseId, load })
+    if (!state.session) return
+    const record = await db.sessions.where('sessionId').equals(state.session.session_id).first()
+    if (!record) return
+    const updatedTemplate = {
+      ...record.template,
+      blocks: record.template.blocks.map(block => ({
+        ...block,
+        exercises: block.exercises.map(ex =>
+          ex.exercise_id === exerciseId
+            ? { ...ex, prescription: { ...ex.prescription, load } }
+            : ex
+        ),
+      })),
+    }
+    await db.sessions.where('sessionId').equals(state.session.session_id).modify({ template: updatedTemplate })
+  }, [state.session])
+
   const value: ActiveWorkoutContextValue = {
     state,
     startWorkout,
@@ -225,6 +258,7 @@ export function ActiveWorkoutProvider({ children }: { children: React.ReactNode 
     pauseWorkout,
     resumeWorkout,
     completeWorkout,
+    updateLoad,
   }
 
   return (

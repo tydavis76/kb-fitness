@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { WorkoutBlock } from '@/db/types'
 import { useActiveWorkout } from '@/context/ActiveWorkoutContext'
 import { Icon } from '@/components/Icon'
@@ -6,7 +6,23 @@ import { Btn } from '@/components/primitives/Btn'
 import { Card } from '@/components/primitives/Card'
 import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
+import { CircularTimer } from '@/components/CircularTimer'
+import { PrescriptionEditor } from '@/components/PrescriptionEditor'
 import { ActiveTopBar } from './ActiveTopBar'
+import { useCountdown } from '@/hooks/useCountdown'
+import { useLeadIn } from '@/hooks/useLeadIn'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db } from '@/db/db'
+
+function ExerciseTimer({ durationSec, leadIn, onComplete }: { durationSec: number; leadIn: number; onComplete: () => void }) {
+  const timer = useCountdown({ duration: durationSec, leadIn, onComplete })
+  useEffect(() => { timer.start() }, [])
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0', position: 'relative' }}>
+      <CircularTimer remaining={timer.remaining} total={timer.total} leadCount={timer.leadCount} phase={timer.phase} size={88} />
+    </div>
+  )
+}
 import { tokens } from '@/styles/tokens'
 
 interface ActiveSupersetProps {
@@ -20,14 +36,19 @@ export function ActiveSuperset({
   onExit,
   onNextBlock,
 }: ActiveSupersetProps) {
-  const { logSet } = useActiveWorkout()
+  const { logSet, updateLoad } = useActiveWorkout()
+  const [leadIn] = useLeadIn()
+  const settings = useLiveQuery(() => db.settings.get(1))
   const [currentRound, setCurrentRound] = useState(1)
   const [activeExerciseIdx, setActiveExerciseIdx] = useState(0)
   const [showRest, setShowRest] = useState(false)
   const [actualReps, setActualReps] = useState<Record<string, number>>({})
+  const [editingExerciseId, setEditingExerciseId] = useState<string | null>(null)
 
   const rounds = block.rounds || 1
   const exercises = block.exercises
+  const isCurrentTimeBased = exercises[activeExerciseIdx]?.prescription.type === 'time'
+  const effectiveRestSec = block.rest_sec ?? settings?.restDefaults?.superset ?? 60
 
   if (exercises.length < 2) return null
 
@@ -51,7 +72,7 @@ export function ActiveSuperset({
       if (currentRound >= rounds) {
         onNextBlock()
       } else {
-        if ((block.rest_sec ?? 0) > 0) {
+        if (effectiveRestSec > 0) {
           setShowRest(true)
         } else {
           setCurrentRound(currentRound + 1)
@@ -74,7 +95,7 @@ export function ActiveSuperset({
   }
 
   if (showRest) {
-    return <RestTimer durationSec={block.rest_sec ?? 60} onDone={handleRestDone} />
+    return <RestTimer durationSec={effectiveRestSec} onDone={handleRestDone} />
   }
 
   const reps = actualReps[currentExercise.exercise_id] ?? targetReps
@@ -241,6 +262,7 @@ export function ActiveSuperset({
                     gap: 14,
                     fontSize: 13,
                     color: tokens.textMuted,
+                    alignItems: 'center',
                   }}
                 >
                   <span>
@@ -267,10 +289,28 @@ export function ActiveSuperset({
                       </span>
                     </>
                   )}
+                  {isActive && (
+                    <button
+                      onClick={() => setEditingExerciseId(ex.exercise_id)}
+                      style={{ fontSize: 10, fontWeight: 700, color: tokens.primary, background: 'none', border: 'none', cursor: 'pointer', letterSpacing: '0.06em', textTransform: 'uppercase', marginLeft: 'auto' }}
+                    >
+                      EDIT
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {isActive && (
+              {isActive && ex.prescription.type === 'time' && (
+                <div style={{ padding: '0 16px 10px', background: tokens.bg, borderTop: `1px solid ${tokens.borderSoft}` }}>
+                  <ExerciseTimer
+                    key={`${currentRound}-${idx}`}
+                    durationSec={ex.prescription.type === 'time' ? (ex.prescription.target as number) : 1}
+                    leadIn={leadIn}
+                    onComplete={handleLogSet}
+                  />
+                </div>
+              )}
+              {isActive && ex.prescription.type !== 'time' && (
                 <div
                   style={{
                     padding: '10px 16px',
@@ -336,7 +376,7 @@ export function ActiveSuperset({
               fontWeight: 600,
             }}
           >
-            Rest {block.rest_sec || 60}s after round
+            Rest {effectiveRestSec}s after round
           </span>
         </div>
       </div>
@@ -346,16 +386,37 @@ export function ActiveSuperset({
           position: 'absolute',
           left: 0,
           right: 0,
-          bottom: 0,
+          bottom: 64,
           padding: 16,
           background: tokens.bg,
           borderTop: `1px solid ${tokens.border}`,
         }}
       >
-        <Btn variant="primary" size="lg" onClick={handleLogSet} style={{ width: '100%' }} icon="arrow-right">
-          Done · Move to {exercises[Math.min(activeExerciseIdx + 1, exercises.length - 1)]?.sub_label || 'next'}
+        <Btn
+          variant={isCurrentTimeBased ? 'secondary' : 'primary'}
+          size="lg"
+          onClick={handleLogSet}
+          style={{ width: '100%' }}
+          icon={isCurrentTimeBased ? 'arrow-right' : 'arrow-right'}
+        >
+          {isCurrentTimeBased ? 'Skip' : 'Next'}
         </Btn>
       </div>
+
+      {editingExerciseId && (() => {
+        const ex = exercises.find(e => e.exercise_id === editingExerciseId)
+        if (!ex) return null
+        return (
+          <PrescriptionEditor
+            open={true}
+            onClose={() => setEditingExerciseId(null)}
+            exerciseName={ex.name}
+            initialLoad={ex.prescription.load.value ?? undefined}
+            initialUnit={ex.prescription.load.unit === 'kg' ? 'kg' : 'lb'}
+            onSave={(load) => updateLoad(ex.exercise_id, load)}
+          />
+        )
+      })()}
     </div>
   )
 }

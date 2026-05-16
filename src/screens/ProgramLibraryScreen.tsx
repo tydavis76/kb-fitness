@@ -9,11 +9,6 @@ import { Chip } from '../components/primitives/Chip'
 import { Sectionlabel } from '../components/primitives/Sectionlabel'
 import { Icon } from '../components/Icon'
 
-const ARCHIVE_ITEMS = [
-  { name: '5/3/1 Boring But Big', date: 'Jan 8 – Mar 30',  sessions: '32 / 36', state: 'completed' as const },
-  { name: 'Easy Strength',         date: 'Nov 12 – Dec 24', sessions: '18 / 24', state: 'ended'     as const },
-  { name: 'Simple & Sinister',     date: 'Aug 1 – Sep 18',  sessions: '40 / 42', state: 'completed' as const },
-]
 
 function PhaseTimeline({ program }: { program: ProgramRecord }) {
   return (
@@ -99,10 +94,12 @@ export function ProgramLibraryScreen() {
     db.programs.where('status').equals('active').first()
   )
 
-  const allPrograms = useLiveQuery(() => db.programs.toArray())
+  const libraryPrograms = useLiveQuery(() =>
+    db.programs.where('status').equals('paused').toArray()
+  )
 
-  const libraryPrograms = (allPrograms ?? []).filter(
-    (p) => p.status !== 'active' && p.status !== 'archived'
+  const archivedPrograms = useLiveQuery(() =>
+    db.programs.where('status').equals('archived').toArray()
   )
 
   return (
@@ -114,7 +111,7 @@ export function ProgramLibraryScreen() {
 
         <Sectionlabel>Library</Sectionlabel>
 
-        {libraryPrograms.map((p) => (
+        {(libraryPrograms ?? []).map((p) => (
           <Card
             key={p.programId}
             padded={false}
@@ -168,8 +165,19 @@ export function ProgramLibraryScreen() {
 
         <Sectionlabel>Archive</Sectionlabel>
 
-        {ARCHIVE_ITEMS.map((a) => (
-          <Card key={a.name} padded={false} style={{ padding: 14 }}>
+        {(archivedPrograms ?? []).length === 0 && (
+          <div style={{ fontSize: 13, color: tokens.textMuted, padding: '8px 2px' }}>
+            No archived programs yet.
+          </div>
+        )}
+
+        {(archivedPrograms ?? []).map((a) => (
+          <Card
+            key={a.programId}
+            padded={false}
+            onClick={() => navigate(a.programId)}
+            style={{ padding: 14, cursor: 'pointer' }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{
                 width: 38,
@@ -181,17 +189,15 @@ export function ProgramLibraryScreen() {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-                <Icon name={a.state === 'completed' ? 'check-circle' : 'flag'} size={18} />
+                <Icon name="flag" size={18} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: tokens.textMuted }}>{a.name}</div>
-                <div style={{ fontSize: 11, color: tokens.textDim, marginTop: 2 }}>
-                  {a.date} · {a.sessions} sessions
+                <div style={{ fontSize: 14, fontWeight: 600, color: tokens.textMuted }}>{a.title}</div>
+                <div style={{ fontSize: 11, color: tokens.textMuted, marginTop: 2 }}>
+                  {a.author} · {a.phases.reduce((acc, p) => acc + p.weeks, 0)} wk
                 </div>
               </div>
-              <Chip size="sm" tone={a.state === 'completed' ? 'work' : 'default'}>
-                {a.state.toUpperCase()}
-              </Chip>
+              <Icon name="chevron-right" size={18} color={tokens.textMuted} />
             </div>
           </Card>
         ))}

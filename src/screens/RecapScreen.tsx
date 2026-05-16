@@ -78,7 +78,7 @@ export function RecapScreen() {
       </div>
 
       {/* Scrollable content */}
-      <div style={{ padding: '16px', flex: 1, overflow: 'auto' }}>
+      <div style={{ padding: '16px', flex: 1, minHeight: 0, overflow: 'auto' }}>
         {/* Total volume card */}
         <div
           style={{

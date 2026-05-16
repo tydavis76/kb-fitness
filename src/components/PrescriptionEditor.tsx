@@ -11,6 +11,9 @@ interface PrescriptionEditorProps {
   onClose: () => void
   exerciseName?: string
   equipment?: string
+  initialLoad?: number
+  initialUnit?: 'lb' | 'kg'
+  onSave?: (load: import('../db/types').LoadObject) => void
 }
 
 function StepperRow({ label, value, onChange, step = 1, min = 1, max = 99, suffix }: {
@@ -38,11 +41,11 @@ function StepperRow({ label, value, onChange, step = 1, min = 1, max = 99, suffi
   )
 }
 
-export function PrescriptionEditor({ open, onClose, exerciseName = 'Exercise', equipment = 'bodyweight' }: PrescriptionEditorProps) {
+export function PrescriptionEditor({ open, onClose, exerciseName = 'Exercise', equipment = 'bodyweight', initialLoad, initialUnit, onSave }: PrescriptionEditorProps) {
   const [sets, setSets] = useState(4)
   const [reps, setReps] = useState(10)
-  const [load, setLoad] = useState(50)
-  const [unit, setUnit] = useState<'lb' | 'kg'>('lb')
+  const [load, setLoad] = useState(initialLoad ?? 50)
+  const [unit, setUnit] = useState<'lb' | 'kg'>(initialUnit ?? 'lb')
   const [tempo, setTempo] = useState('2-1-2-0')
   const [tempoOn, setTempoOn] = useState(true)
   const [restSec, setRestSec] = useState(90)
@@ -110,7 +113,10 @@ export function PrescriptionEditor({ open, onClose, exerciseName = 'Exercise', e
 
       <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
         <Btn variant="secondary" size="lg" full onClick={onClose}>Cancel</Btn>
-        <Btn variant="primary" size="lg" full icon="check" onClick={onClose}>Save</Btn>
+        <Btn variant="primary" size="lg" full icon="check" onClick={() => {
+          onSave?.({ value: load, unit, label: `${load} ${unit}` })
+          onClose()
+        }}>Save</Btn>
       </div>
     </BottomSheet>
   )
