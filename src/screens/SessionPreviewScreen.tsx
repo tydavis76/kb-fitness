@@ -54,14 +54,14 @@ export function SessionPreviewScreen() {
   }
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto', position: 'relative' }}>
       <ScreenHeader
         title={template.metadata?.title || 'Session'}
         subtitle={template.metadata?.environment}
         leftIcon="chevron-left"
         leftAction={() => navigate(-1)}
       />
-      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: '0 16px 140px' }}>
+      <div style={{ padding: '0 16px 140px' }}>
         {blocks.map((block, blockIndex) => (
           <div key={blockIndex} style={{ marginBottom: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
