@@ -1,5 +1,6 @@
 import type { ReactNode, HTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
+import { Icon } from '../Icon'
 
 export interface ScreenHeaderProps extends HTMLAttributes<HTMLDivElement> {
   title: string
@@ -55,7 +56,7 @@ export function ScreenHeader({
               borderRadius: 10,
             }}
           >
-            {leftIcon}
+            <Icon name={leftIcon} size={20} color={tokens.text} />
           </button>
         )}
         <div style={{ minWidth: 0 }}>

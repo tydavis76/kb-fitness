@@ -32,7 +32,7 @@ function getDayStatus(dayKey: string, program: {
   const currentAbsoluteWeek = weeksBefore + program.weekIndex + 1
 
   const sessionId = program.weeklyStructure[dayKey]
-  if (!sessionId) return 'rest'
+  if (!sessionId || sessionId.startsWith('rest')) return 'rest'
 
   if (absoluteWeek < currentAbsoluteWeek) return 'done'
   if (absoluteWeek > currentAbsoluteWeek) return 'upcoming'
@@ -50,10 +50,22 @@ export function WeekDetailScreen() {
 
   const absoluteWeek = parseInt(weekNum ?? '1', 10)
 
+  // Derive which phase this absolute week belongs to
+  function getPhaseIdForWeek(phases: Array<{ id: string; weeks: number }>, week: number): string {
+    let remaining = week - 1
+    for (const phase of phases) {
+      if (remaining < phase.weeks) return phase.id
+      remaining -= phase.weeks
+    }
+    return phases[phases.length - 1]?.id ?? 'phase_1'
+  }
+
   const program = useLiveQuery(
     () => programId ? db.programs.where('programId').equals(programId).first() : undefined,
     [programId]
   )
+
+  const allSessions = useLiveQuery(() => db.sessions.toArray(), [])
 
   if (!program) {
     return (
@@ -80,6 +92,15 @@ export function WeekDetailScreen() {
   }
   const weekInPhase = remaining + 1
 
+  const phaseId = getPhaseIdForWeek(program.phases, absoluteWeek)
+
+  // Map full session IDs → display title (strip trailing "(Weeks N–N)" since week context is already shown)
+  const sessionTitleMap: Record<string, string> = {}
+  allSessions?.forEach(s => {
+    const title = (s.template.metadata?.title || s.sessionId).replace(/\s*\(Weeks[^)]*\)$/, '').trim()
+    sessionTitleMap[s.sessionId] = title
+  })
+
   // Determine intensity label (simplified)
   const intensities = ['100%', '105%', '110%', 'deload']
   const intensity = intensities[(weekInPhase - 1) % intensities.length] ?? '100%'
@@ -96,17 +117,21 @@ export function WeekDetailScreen() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {DAY_ORDER.map((dayKey) => {
             const sessionId = program.weeklyStructure[dayKey]
-            const isRest = !sessionId
+            const isRest = !sessionId || sessionId.startsWith('rest')
             const status = getDayStatus(dayKey, program, absoluteWeek)
             const isToday = status === 'today'
             const isDone = status === 'done'
+            const fullSessionId = sessionId ? `${sessionId}_${phaseId}` : ''
+            const sessionTitle = fullSessionId
+              ? (sessionTitleMap[fullSessionId] ?? sessionId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()))
+              : 'Rest'
 
             return (
               <button
                 key={dayKey}
                 onClick={() => {
-                  if (!isRest && sessionId) {
-                    navigate(`/programs/${programId}/session/${sessionId}`)
+                  if (!isRest && fullSessionId) {
+                    navigate('/preview', { state: { sessionId: fullSessionId } })
                   }
                 }}
                 style={{
@@ -141,7 +166,7 @@ export function WeekDetailScreen() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <div style={{ fontSize: 15, fontWeight: 600, color: isRest ? tokens.textMuted : tokens.text }}>
-                      {isRest ? 'Rest' : sessionId}
+                      {isRest ? 'Rest' : sessionTitle}
                     </div>
                     {isToday && <Chip tone="accent" size="sm">TODAY</Chip>}
                   </div>
