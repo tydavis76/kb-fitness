@@ -27,7 +27,7 @@ export function ExerciseLibraryScreen() {
   })
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
       <ScreenHeader
         title="Exercises"
         subtitle={`${EXERCISES.length} in your library`}
@@ -60,7 +60,7 @@ export function ExerciseLibraryScreen() {
         ))}
       </div>
 
-      <div style={{ flex: 1, overflow: 'auto', padding: '0 16px 16px' }}>
+      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: '0 16px 16px' }}>
         {PATTERNS.map(pat => {
           const items = filtered.filter(e => e.pattern === pat)
           if (!items.length) return null
