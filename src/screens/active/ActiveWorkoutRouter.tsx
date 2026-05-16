@@ -35,6 +35,7 @@ export function ActiveWorkoutRouter() {
 
   return (
     <Screen
+      key={state.currentBlockIndex}
       block={block}
       onExit={() => nav('../')}
       onNextBlock={() => {
