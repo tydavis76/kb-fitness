@@ -19,10 +19,10 @@ export interface ExerciseDetail extends Exercise {
 export const EXERCISES: Exercise[] = [
   // Swings & Hinges
   { id: 'kb_swing_c1p2',            name: 'Kettlebell Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
-  { id: 'kb_swing_c2',              name: 'Kettlebell Swing (Relaxed)',            equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
-  { id: 'kb_swing_bonus_s1',        name: 'Kettlebell Swing (Bonus Finisher)',     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
-  { id: 'kb_swing_bonus_s1p2',      name: 'Kettlebell Swing (Bonus #2)',           equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
-  { id: 'kb_swing_emom',            name: 'Kettlebell Swing EMOM',                 equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
+  { id: 'kb_swing_c2',              name: 'Kettlebell Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
+  { id: 'kb_swing_bonus_s1',        name: 'Kettlebell Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
+  { id: 'kb_swing_bonus_s1p2',      name: 'Kettlebell Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
+  { id: 'kb_swing_emom',            name: 'Kettlebell Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
   { id: 'combo_single_arm_swing',   name: 'Single Arm Swing',                     equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'glutes'] },
   { id: 'skier_swing',              name: 'Skier Swing',                           equipment: 'kettlebell',  pattern: 'hinge',  primary: ['posterior chain', 'core'] },
   { id: 'staggered_rdl_swing',      name: 'Staggered RDL / Swing',                equipment: 'kettlebell',  pattern: 'hinge',  primary: ['hamstrings', 'glutes'] },
@@ -52,7 +52,7 @@ export const EXERCISES: Exercise[] = [
   // Pressing
   { id: 'kb_floor_press',           name: 'Kettlebell Floor Press',               equipment: 'kettlebell',  pattern: 'push',   primary: ['chest', 'triceps'] },
   { id: 'kb_bench_press_p1',        name: 'Kettlebell Bench Press',               equipment: 'kettlebell',  pattern: 'push',   primary: ['chest', 'triceps'] },
-  { id: 'kb_bench_press_p2',        name: 'Kettlebell Bench Press (Phase 2)',      equipment: 'kettlebell',  pattern: 'push',   primary: ['chest', 'triceps'] },
+  { id: 'kb_bench_press_p2',        name: 'Kettlebell Bench Press',               equipment: 'kettlebell',  pattern: 'push',   primary: ['chest', 'triceps'] },
   { id: 'half_kneeling_press',      name: 'Half Kneeling Press',                  equipment: 'kettlebell',  pattern: 'push',   primary: ['shoulders', 'core'] },
   { id: 'push_press_complex',       name: 'Push Press',                           equipment: 'kettlebell',  pattern: 'push',   primary: ['shoulders', 'legs'] },
   { id: 'single_arm_incline_press_1_5', name: 'Single Arm Incline Press (1.5 reps)', equipment: 'kettlebell', pattern: 'push', primary: ['chest', 'shoulders'] },

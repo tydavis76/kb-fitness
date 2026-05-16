@@ -32,7 +32,7 @@ export function ExerciseLibraryScreen() {
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto', position: 'relative' }}>
       <ScreenHeader
         title="Exercises"
-        subtitle={`${EXERCISES.length} in your library`}
+        subtitle={`${EXERCISES.filter((e, i, arr) => arr.findIndex(x => x.name === e.name) === i).length} in your library`}
         leftIcon="chevron-left"
         leftAction={() => navigate(-1)}
       />
