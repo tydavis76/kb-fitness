@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useActiveWorkout } from '@/context/ActiveWorkoutContext'
+import { RestTimer } from '@/components/RestTimer'
 import { ActiveStraight } from './ActiveStraight'
 import { ActiveSuperset } from './ActiveSuperset'
 import { ActiveCircuit } from './ActiveCircuit'
@@ -23,6 +25,7 @@ const SCREEN_MAP = {
 export function ActiveWorkoutRouter() {
   const nav = useNavigate()
   const { state, nextBlock } = useActiveWorkout()
+  const [interBlockRestSec, setInterBlockRestSec] = useState<number | null>(null)
 
   if (!state.session) {
     return <div style={{ padding: 16, color: '#fff' }}>No active workout</div>
@@ -30,6 +33,18 @@ export function ActiveWorkoutRouter() {
 
   const block = state.session.blocks[state.currentBlockIndex]
   const isLastBlock = state.currentBlockIndex === state.session.blocks.length - 1
+
+  if (interBlockRestSec !== null) {
+    return (
+      <RestTimer
+        durationSec={interBlockRestSec}
+        onDone={() => {
+          setInterBlockRestSec(null)
+          nextBlock()
+        }}
+      />
+    )
+  }
 
   const Screen = SCREEN_MAP[block.type as keyof typeof SCREEN_MAP] ?? ActiveStraight
 
@@ -42,7 +57,12 @@ export function ActiveWorkoutRouter() {
         if (isLastBlock) {
           nav('../recap')
         } else {
-          nextBlock()
+          const restSec = block.rest_sec ?? 0
+          if (restSec > 0) {
+            setInterBlockRestSec(restSec)
+          } else {
+            nextBlock()
+          }
         }
       }}
     />
