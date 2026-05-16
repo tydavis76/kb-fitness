@@ -17,14 +17,16 @@ export function ExerciseLibraryScreen() {
   const [query, setQuery] = useState('')
   const [detail, setDetail] = useState<Exercise | null>(null)
 
-  const filtered = EXERCISES.filter(e => {
-    if (filter !== 'all' && e.equipment !== filter) return false
-    if (query) {
-      const q = query.toLowerCase()
-      return e.name.toLowerCase().includes(q) || e.pattern.includes(q) || e.equipment.includes(q)
-    }
-    return true
-  })
+  const filtered = EXERCISES
+    .filter((e, i, arr) => arr.findIndex(x => x.name === e.name) === i)
+    .filter(e => {
+      if (filter !== 'all' && e.equipment !== filter) return false
+      if (query) {
+        const q = query.toLowerCase()
+        return e.name.toLowerCase().includes(q) || e.pattern.includes(q) || e.equipment.includes(q)
+      }
+      return true
+    })
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto', position: 'relative' }}>
