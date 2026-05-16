@@ -20,6 +20,15 @@ class KBDatabase extends Dexie {
       activeWorkout: '++id',
       settings:      '++id',
     })
+    this.version(2).stores({
+      programs:      '++id, programId, status',
+      sessions:      '++id, sessionId, programId',
+      workoutLogs:   '++id, sessionId, completedAt, rating',
+      activeWorkout: '++id',
+      settings:      '++id',
+    }).upgrade(() => {
+      localStorage.removeItem('kb.seeded')
+    })
   }
 }
 
