@@ -6,6 +6,7 @@ import { Btn } from '@/components/primitives/Btn'
 import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
 import { CircularTimer } from '@/components/CircularTimer'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useLeadIn } from '@/hooks/useLeadIn'
@@ -218,14 +219,18 @@ export function ActiveCircuit({
                 {done ? <Icon name="check" size={18} /> : idx + 1}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: done ? tokens.textMuted : tokens.text,
-                  }}
-                >
-                  {ex.name}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: done ? tokens.textMuted : tokens.text,
+                      flex: 1,
+                    }}
+                  >
+                    {ex.name}
+                  </div>
+                  <ExerciseInfoButton exerciseId={ex.exercise_id} />
                 </div>
                 <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 2 }}>
                   {targetValue}

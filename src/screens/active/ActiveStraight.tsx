@@ -7,6 +7,7 @@ import { Card } from '@/components/primitives/Card'
 import { RestTimer } from '@/components/RestTimer'
 import { SetTimerButton } from '@/components/SetTimerButton'
 import { PrescriptionEditor } from '@/components/PrescriptionEditor'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/db/db'
@@ -91,8 +92,11 @@ export function ActiveStraight({
       <div style={{ flex: 1, overflow: 'auto', padding: '8px 16px 120px' }}>
         {/* Exercise name */}
         <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-            {exercise.name}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+            <div style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1.1, flex: 1 }}>
+              {exercise.name}
+            </div>
+            <ExerciseInfoButton exerciseId={exercise.exercise_id} />
           </div>
           {exercise.protocol_constraints?.cues?.[0] && (
             <div style={{ fontSize: 14, color: tokens.textMuted, marginTop: 4 }}>

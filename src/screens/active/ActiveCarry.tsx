@@ -6,6 +6,7 @@ import { useLeadIn } from '@/hooks/useLeadIn'
 import { Btn } from '@/components/primitives/Btn'
 import { Card } from '@/components/primitives/Card'
 import { CircularTimer } from '@/components/CircularTimer'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { tokens } from '@/styles/tokens'
 
@@ -65,8 +66,11 @@ export function ActiveCarry({
         }}
       >
         <div style={{ marginBottom: 18 }}>
-          <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em' }}>
-            {exercise?.name || 'Carry'}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+            <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', flex: 1 }}>
+              {exercise?.name || 'Carry'}
+            </div>
+            {exercise && <ExerciseInfoButton exerciseId={exercise.exercise_id} />}
           </div>
           <div style={{ fontSize: 14, color: tokens.textMuted, marginTop: 4 }}>
             Round 1 of 1 · {block.rest_sec || 90}s rest

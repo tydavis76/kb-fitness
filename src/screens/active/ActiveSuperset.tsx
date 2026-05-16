@@ -8,6 +8,7 @@ import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
 import { CircularTimer } from '@/components/CircularTimer'
 import { PrescriptionEditor } from '@/components/PrescriptionEditor'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useLeadIn } from '@/hooks/useLeadIn'
@@ -246,15 +247,18 @@ export function ActiveSuperset({
                     <Chip size="sm">NEXT</Chip>
                   )}
                 </div>
-                <div
-                  style={{
-                    fontSize: 22,
-                    fontWeight: 700,
-                    letterSpacing: '-0.01em',
-                    marginBottom: 6,
-                  }}
-                >
-                  {ex.name}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                  <div
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 700,
+                      letterSpacing: '-0.01em',
+                      flex: 1,
+                    }}
+                  >
+                    {ex.name}
+                  </div>
+                  <ExerciseInfoButton exerciseId={ex.exercise_id} />
                 </div>
                 <div
                   style={{

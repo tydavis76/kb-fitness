@@ -74,7 +74,7 @@ export function ExerciseDetailSheet({ open, onClose, exercise, mode = 'view', on
   const subs = SUBSTITUTIONS[exercise.id]
 
   return (
-    <div style={{ position: 'absolute', inset: 0, zIndex: 50, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
       <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }} />
       <div style={{
         position: 'relative', maxHeight: '92%', overflow: 'auto',

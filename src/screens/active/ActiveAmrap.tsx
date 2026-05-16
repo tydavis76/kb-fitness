@@ -7,6 +7,7 @@ import { Icon } from '@/components/Icon'
 import { Btn } from '@/components/primitives/Btn'
 import { Card } from '@/components/primitives/Card'
 import { CircularTimer } from '@/components/CircularTimer'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { tokens } from '@/styles/tokens'
 
@@ -254,6 +255,7 @@ export function ActiveAmrap({
                 <div style={{ flex: 1, fontSize: 14, fontWeight: 600 }}>
                   {ex.name}
                 </div>
+                <ExerciseInfoButton exerciseId={ex.exercise_id} />
                 <div
                   style={{
                     fontSize: 13,

@@ -5,6 +5,7 @@ import { Btn } from '@/components/primitives/Btn'
 import { Card } from '@/components/primitives/Card'
 import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { tokens } from '@/styles/tokens'
 
@@ -90,8 +91,11 @@ export function ActiveLadder({
         }}
       >
         <div style={{ marginBottom: 10 }}>
-          <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.02em' }}>
-            {exercise.name}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+            <div style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.02em', flex: 1 }}>
+              {exercise.name}
+            </div>
+            <ExerciseInfoButton exerciseId={exercise.exercise_id} />
           </div>
           <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 2 }}>
             {rungs.length} rungs · {block.rest_sec || 60}s rest

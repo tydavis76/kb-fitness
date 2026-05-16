@@ -6,6 +6,7 @@ import { Btn } from '@/components/primitives/Btn'
 import { Card } from '@/components/primitives/Card'
 import { Chip } from '@/components/primitives/Chip'
 import { RestTimer } from '@/components/RestTimer'
+import { ExerciseInfoButton } from '@/components/ExerciseInfoButton'
 import { ActiveTopBar } from './ActiveTopBar'
 import { tokens } from '@/styles/tokens'
 
@@ -114,8 +115,11 @@ export function ActiveTempo({
         }}
       >
         <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em' }}>
-            {exercise.name}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+            <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', flex: 1 }}>
+              {exercise.name}
+            </div>
+            <ExerciseInfoButton exerciseId={exercise.exercise_id} />
           </div>
           <div
             style={{
