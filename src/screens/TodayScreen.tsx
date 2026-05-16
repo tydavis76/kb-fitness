@@ -141,7 +141,18 @@ export function TodayScreen() {
   const dayOfWeekKey = getDayOfWeekKey(today)
 
   const program = useLiveQuery(() => db.programs.where('status').equals('active').first())
-  const workoutLogs = useLiveQuery(() => db.workoutLogs.toArray(), [])
+
+  const weekStart = (() => {
+    const d = new Date(today)
+    d.setDate(d.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1))
+    d.setHours(0, 0, 0, 0)
+    return d.getTime()
+  })()
+
+  const workoutLogs = useLiveQuery(
+    () => db.workoutLogs.where('completedAt').aboveOrEqual(weekStart).toArray(),
+    [weekStart]
+  )
 
   const [selectedDayKey, setSelectedDayKey] = useState(dayOfWeekKey)
   const [isSkipping, setIsSkipping] = useState(false)
