@@ -71,3 +71,21 @@ test('WeekStrip disables rest days', () => {
   )
   expect(screen.getByText('We').closest('button')).toBeDisabled()
 })
+
+test('WeekStrip does not call onSelect when a rest day is clicked', () => {
+  const onSelect = vi.fn()
+  render(
+    <MemoryRouter>
+      <WeekStrip
+        weeklyStructure={STRUCTURE}
+        phaseId="phase1"
+        todayKey="monday"
+        selectedKey="monday"
+        doneSessionIds={new Set()}
+        onSelect={onSelect}
+      />
+    </MemoryRouter>
+  )
+  fireEvent.click(screen.getByText('We').closest('button')!)
+  expect(onSelect).not.toHaveBeenCalled()
+})

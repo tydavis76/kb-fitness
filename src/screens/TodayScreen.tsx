@@ -90,7 +90,7 @@ export function WeekStrip({ weeklyStructure, phaseId, todayKey, selectedKey, don
         return (
           <button
             key={dayKey}
-            onClick={() => onSelect(dayKey)}
+            onClick={() => { if (!isRest) onSelect(dayKey) }}
             disabled={isRest}
             style={{
               flex: 1,
