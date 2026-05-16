@@ -73,7 +73,7 @@ export function ScreenHeader({
           {subtitle && (
             <div
               style={{
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: 500,
                 color: tokens.textMuted,
                 marginTop: 2,
