@@ -36,6 +36,7 @@ export function BottomSheet({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        paddingBottom: 64,
       }}
       onClick={handleBackdropClick}
     >
