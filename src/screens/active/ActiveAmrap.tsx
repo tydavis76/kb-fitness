@@ -71,14 +71,31 @@ export function ActiveAmrap({
           flexDirection: 'column',
         }}
       >
-        {/* Exercise names + info buttons */}
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', padding: '4px 0 8px' }}>
-          {exercises.map(ex => (
-            <div key={ex.exercise_id} style={{ display: 'flex', alignItems: 'center', gap: 6, background: tokens.surface, border: `1px solid ${tokens.border}`, borderRadius: 20, padding: '5px 10px 5px 12px' }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: tokens.text }}>{ex.name}</span>
-              <ExerciseInfoButton exerciseId={ex.exercise_id} />
+        {/* Exercise list with reps */}
+        <div style={{ background: tokens.surface, border: `1px solid ${tokens.border}`, borderRadius: 14, overflow: 'hidden', marginBottom: 8 }}>
+          <div style={{ padding: '8px 14px 6px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: tokens.textMuted }}>
+              {exercises.length > 1 ? `Alternate · ${duration / 60} min AMRAP` : `${duration / 60} min AMRAP`}
             </div>
-          ))}
+          </div>
+          {exercises.map((ex, i) => {
+            const target = ex.prescription.target
+            const unit = ex.prescription.type === 'time' ? 's' : ' reps'
+            return (
+              <div key={ex.exercise_id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderTop: `1px solid ${tokens.borderSoft}` }}>
+                <div style={{ width: 22, height: 22, borderRadius: 6, background: tokens.surface2, color: tokens.textMuted, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, flexShrink: 0 }}>
+                  {i + 1}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>{ex.name}</div>
+                  <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 1 }}>
+                    {target}{unit} · {ex.prescription.load.label}
+                  </div>
+                </div>
+                <ExerciseInfoButton exerciseId={ex.exercise_id} />
+              </div>
+            )
+          })}
         </div>
 
         {/* Big timer */}
