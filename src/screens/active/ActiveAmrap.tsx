@@ -71,14 +71,24 @@ export function ActiveAmrap({
           flexDirection: 'column',
         }}
       >
+        {/* Exercise names + info buttons */}
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', padding: '4px 0 8px' }}>
+          {exercises.map(ex => (
+            <div key={ex.exercise_id} style={{ display: 'flex', alignItems: 'center', gap: 6, background: tokens.surface, border: `1px solid ${tokens.border}`, borderRadius: 20, padding: '5px 10px 5px 12px' }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: tokens.text }}>{ex.name}</span>
+              <ExerciseInfoButton exerciseId={ex.exercise_id} />
+            </div>
+          ))}
+        </div>
+
         {/* Big timer */}
-        <div style={{ padding: '12px 0 6px', textAlign: 'center' }}>
+        <div style={{ padding: '4px 0 6px', textAlign: 'center' }}>
           <CircularTimer
             remaining={timer.remaining}
             total={timer.total}
             leadCount={timer.leadCount}
             phase={timer.phase}
-            size={240}
+            size={200}
             accent={tokens.accent}
           />
         </div>
