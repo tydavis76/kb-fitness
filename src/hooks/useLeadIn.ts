@@ -10,7 +10,7 @@ export const useLeadIn = (): [0 | 3 | 5 | 10, (value: 0 | 3 | 5 | 10) => Promise
     if (settings?.id) {
       await db.settings.update(settings.id, { leadIn: value })
     } else {
-      await db.settings.add({ id: 1, leadIn: value, unit: 'kg', sound: true, haptics: true, restDefaults: { straight: 90, superset: 60, circuit: 45 } })
+      await db.settings.add({ id: 1, leadIn: value, unit: 'kg', sound: true, haptics: true, restDefaults: { straight: 90, superset: 60, circuit: 45 }, ownedKettlebells: [16, 20, 24, 32] })
     }
   }
 

@@ -7,6 +7,7 @@ import { useLeadIn } from '../hooks/useLeadIn'
 import { useSettings } from '../hooks/useSettings'
 
 const LEAD_OPTS: (0 | 3 | 5 | 10)[] = [0, 3, 5, 10]
+const KB_WEIGHTS = [16, 20, 24, 28, 32]
 
 function iconBox(icon: string) {
   return (
@@ -37,6 +38,13 @@ export function SettingsScreen() {
   const settings = useSettings()
   const [leadIn, setLeadIn] = useLeadIn()
   const unit = settings?.unit ?? 'lb'
+  const ownedKettlebells = settings?.ownedKettlebells ?? [16, 20, 24, 32]
+
+  async function toggleKettlebell(kg: number) {
+    const current = settings?.ownedKettlebells ?? [16, 20, 24, 32]
+    const next = current.includes(kg) ? current.filter(k => k !== kg) : [...current, kg].sort((a, b) => a - b)
+    await db.settings.update(1, { ownedKettlebells: next })
+  }
 
   async function setUnit(u: 'lb' | 'kg') {
     await db.settings.update(1, { unit: u })
@@ -114,6 +122,42 @@ export function SettingsScreen() {
                 }}>{n === 0 ? 'Off' : `${n}s`}</button>
               ))}
             </div>
+          </div>
+        </Card>
+
+        <Card padded={false} style={{ marginBottom: 12 }}>
+          <div style={{ padding: '14px 14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+              {iconBox('kettlebell')}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>My kettlebells</div>
+                <div style={{ fontSize: 11, color: tokens.textMuted, marginTop: 1 }}>
+                  Weights you own — shown as options during workouts
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {KB_WEIGHTS.map(kg => {
+                const owned = ownedKettlebells.includes(kg)
+                return (
+                  <button
+                    key={kg}
+                    onClick={() => toggleKettlebell(kg)}
+                    style={{
+                      flex: 1, height: 44, borderRadius: 10,
+                      background: owned ? tokens.primary : tokens.surface2,
+                      color: owned ? tokens.bg : tokens.textMuted,
+                      border: `1px solid ${owned ? tokens.primary : tokens.border}`,
+                      fontWeight: 700, fontSize: 13, cursor: 'pointer',
+                      fontFamily: 'inherit', fontVariantNumeric: 'tabular-nums',
+                    }}
+                  >
+                    {kg}
+                  </button>
+                )
+              })}
+            </div>
+            <div style={{ fontSize: 11, color: tokens.textDim, marginTop: 8 }}>kg</div>
           </div>
         </Card>
 

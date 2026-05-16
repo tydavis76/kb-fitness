@@ -109,6 +109,7 @@ export interface SettingsRecord {
   sound: boolean
   haptics: boolean
   restDefaults: { straight: number; superset: number; circuit: number }
+  ownedKettlebells: number[]
 }
 
 export interface ExerciseLibraryEntry {

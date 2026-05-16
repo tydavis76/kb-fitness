@@ -34,6 +34,17 @@ class KBDatabase extends Dexie {
       activeWorkout: '++id',
       settings:      '++id',
     })
+    this.version(4).stores({
+      programs:      '++id, programId, status',
+      sessions:      '++id, sessionId, programId',
+      workoutLogs:   '++id, sessionId, completedAt, rating',
+      activeWorkout: '++id',
+      settings:      '++id',
+    }).upgrade(tx => {
+      return tx.table('settings').toCollection().modify(s => {
+        if (!s.ownedKettlebells) s.ownedKettlebells = [16, 20, 24, 32]
+      })
+    })
   }
 }
 

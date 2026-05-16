@@ -41,6 +41,7 @@ export function ActiveCircuit({
   const [round, setRound] = useState(1)
   const [exerciseIdx, setExerciseIdx] = useState(0)
   const [showRest, setShowRest] = useState(false)
+  const [selectedKg, setSelectedKg] = useState<number | null>(null)
 
   const rounds = block.rounds || 1
   const exercises = block.exercises
@@ -48,16 +49,28 @@ export function ActiveCircuit({
   const isCurrentTimeBased = currentEx?.prescription.type === 'time'
   const effectiveRestSec = block.rest_sec ?? settings?.restDefaults?.circuit ?? 60
 
+  const isKettlebellOnly = exercises.every(ex =>
+    ex.prescription.load.unit === 'lbs' || ex.prescription.load.label.toLowerCase().includes('kettlebell')
+  )
+  const ownedKettlebells: number[] = settings?.ownedKettlebells ?? [16, 20, 24, 32]
+
+  const kgLoad = (kg: number): import('@/db/types').LoadObject => ({
+    value: kg, unit: 'kg', label: `${kg} kg`,
+  })
+
   if (exercises.length === 0) return null
 
   const handleDoneExercise = () => {
     const ex = exercises[exerciseIdx]
+    const load = isKettlebellOnly && selectedKg !== null
+      ? kgLoad(selectedKg)
+      : ex.prescription.load
     logSet({
       exerciseId: ex.exercise_id,
       setIndex: (round - 1) * exercises.length + exerciseIdx,
       actualReps:
         ex.prescription.type === 'reps' ? (ex.prescription.target as number) : null,
-      actualLoad: ex.prescription.load,
+      actualLoad: load,
       completedAt: Date.now(),
     })
 
@@ -89,6 +102,52 @@ export function ActiveCircuit({
 
   if (showRest) {
     return <RestTimer durationSec={effectiveRestSec} onDone={handleRestDone} />
+  }
+
+  if (isKettlebellOnly && selectedKg === null) {
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <ActiveTopBar
+          blockLabel={block.label || 'A'}
+          blockName={block.name || 'Circuit'}
+          blockType="circuit"
+          current={1}
+          total={rounds}
+          onExit={onExit}
+        />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 24px 80px' }}>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: tokens.textMuted, marginBottom: 8, textAlign: 'center' }}>
+            Select kettlebell
+          </div>
+          <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em', textAlign: 'center', marginBottom: 4 }}>
+            {block.name || 'Circuit'}
+          </div>
+          <div style={{ fontSize: 13, color: tokens.textMuted, textAlign: 'center', marginBottom: 32 }}>
+            {exercises.length} exercises · {rounds} rounds
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {ownedKettlebells.map(kg => (
+              <button
+                key={kg}
+                onClick={() => setSelectedKg(kg)}
+                style={{
+                  width: '100%', padding: '20px 24px',
+                  borderRadius: 16, border: `1px solid ${tokens.border}`,
+                  background: tokens.surface,
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  cursor: 'pointer', fontFamily: 'inherit', color: tokens.text,
+                }}
+              >
+                <span style={{ fontSize: 28, fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>{kg} kg</span>
+                <span style={{ fontSize: 13, color: tokens.textMuted, fontWeight: 600 }}>
+                  {Math.round(kg * 2.205)} lb
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const progressPercent = (round / rounds) * 100
@@ -174,6 +233,11 @@ export function ActiveCircuit({
             <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 2 }}>
               {effectiveRestSec}s rest between rounds
             </div>
+            {selectedKg !== null && (
+              <div style={{ fontSize: 12, color: tokens.accent, marginTop: 2, fontWeight: 600 }}>
+                {selectedKg} kg kettlebell
+              </div>
+            )}
           </div>
         </div>
 
