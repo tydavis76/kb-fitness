@@ -6,6 +6,7 @@ export interface BottomSheetProps extends HTMLAttributes<HTMLDivElement> {
   open: boolean
   onClose: () => void
   title?: string
+  footer?: ReactNode
 }
 
 export function BottomSheet({
@@ -13,6 +14,7 @@ export function BottomSheet({
   open,
   onClose,
   title,
+  footer,
   ...rest
 }: BottomSheetProps) {
   if (!open) return null
@@ -51,35 +53,52 @@ export function BottomSheet({
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           borderTop: `1px solid ${tokens.border}`,
-          padding: '12px 16px 24px',
           maxHeight: '82%',
-          overflow: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
         }}
         onClick={handleSheetClick}
         {...rest}
       >
-        <div
-          style={{
-            width: 40,
-            height: 4,
-            background: tokens.border,
-            borderRadius: 2,
-            margin: '0 auto 12px',
-          }}
-        />
-        {title && (
+        {/* Drag handle + header — does not scroll */}
+        <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
           <div
             style={{
-              fontSize: 18,
-              fontWeight: 700,
-              color: tokens.text,
-              marginBottom: 12,
+              width: 40,
+              height: 4,
+              background: tokens.border,
+              borderRadius: 2,
+              margin: '0 auto 12px',
             }}
-          >
-            {title}
+          />
+          {title && (
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 700,
+                color: tokens.text,
+                marginBottom: 12,
+              }}
+            >
+              {title}
+            </div>
+          )}
+        </div>
+
+        {/* Scrollable content */}
+        <div style={{ flex: 1, overflow: 'auto', padding: '0 16px' }}>
+          {children}
+        </div>
+
+        {/* Sticky footer — does not scroll */}
+        {footer && (
+          <div style={{ padding: '12px 16px 24px', flexShrink: 0, borderTop: `1px solid ${tokens.borderSoft}` }}>
+            {footer}
           </div>
         )}
-        {children}
+
+        {/* Bottom padding when no footer */}
+        {!footer && <div style={{ height: 24, flexShrink: 0 }} />}
       </div>
     </div>
   )

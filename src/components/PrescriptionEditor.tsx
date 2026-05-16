@@ -52,15 +52,25 @@ export function PrescriptionEditor({ open, onClose, exerciseName = 'Exercise', e
 
   const isNumericLoad = ['dumbbell', 'kettlebell', 'bodyweight'].includes(equipment)
 
+  const footer = (
+    <div style={{ display: 'flex', gap: 8 }}>
+      <Btn variant="secondary" size="lg" full onClick={onClose}>Cancel</Btn>
+      <Btn variant="primary" size="lg" full icon="check" onClick={() => {
+        onSave?.({ value: load, unit, label: `${load} ${unit}` })
+        onClose()
+      }}>Save</Btn>
+    </div>
+  )
+
   return (
-    <BottomSheet open={open} onClose={onClose} title="Edit prescription">
+    <BottomSheet open={open} onClose={onClose} title="Edit prescription" footer={footer}>
       <div style={{ fontSize: 13, color: tokens.textMuted, marginBottom: 12 }}>
         {exerciseName}
         <span style={{ marginLeft: 6 }}>·</span>
         <span style={{ color: tokens.text, fontWeight: 600, marginLeft: 6 }}>{equipment}</span>
       </div>
 
-      <Card padded={false}>
+      <Card padded={false} style={{ marginBottom: 4 }}>
         <StepperRow label="Sets" value={sets} onChange={setSets} max={10} />
         <StepperRow label="Reps" value={reps} onChange={setReps} max={50} />
 
@@ -110,14 +120,6 @@ export function PrescriptionEditor({ open, onClose, exerciseName = 'Exercise', e
           )}
         </div>
       </Card>
-
-      <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
-        <Btn variant="secondary" size="lg" full onClick={onClose}>Cancel</Btn>
-        <Btn variant="primary" size="lg" full icon="check" onClick={() => {
-          onSave?.({ value: load, unit, label: `${load} ${unit}` })
-          onClose()
-        }}>Save</Btn>
-      </div>
     </BottomSheet>
   )
 }
