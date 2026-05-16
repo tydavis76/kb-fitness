@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode, ButtonHTMLAttributes } from 'react'
 import { tokens } from '../../styles/tokens'
+import { Icon } from '../Icon'
 
 export type BtnVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
 export type BtnSize = 'sm' | 'md' | 'lg'
@@ -115,9 +116,9 @@ export function Btn({
       }}
       {...rest}
     >
-      {icon && <span>{icon}</span>}
+      {icon && <Icon name={icon} size={fontSizes[size] + 2} color={v.color} />}
       {children}
-      {iconRight && <span>{iconRight}</span>}
+      {iconRight && <Icon name={iconRight} size={fontSizes[size] + 2} color={v.color} />}
     </button>
   )
 }
