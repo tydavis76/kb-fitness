@@ -8,6 +8,7 @@ import { useSettings } from '../hooks/useSettings'
 
 const LEAD_OPTS: (0 | 3 | 5 | 10)[] = [0, 3, 5, 10]
 const KB_WEIGHTS = [16, 20, 24, 28, 32]
+const SIDE_SWITCH_OPTS = [5, 10, 15]
 
 function iconBox(icon: string) {
   return (
@@ -39,6 +40,7 @@ export function SettingsScreen() {
   const [leadIn, setLeadIn] = useLeadIn()
   const unit = settings?.unit ?? 'lb'
   const ownedKettlebells = settings?.ownedKettlebells ?? [16, 20, 24, 32]
+  const sideSwitchSec = settings?.sideSwitchSec ?? 5
 
   async function toggleKettlebell(kg: number) {
     const current = settings?.ownedKettlebells ?? [16, 20, 24, 32]
@@ -120,6 +122,33 @@ export function SettingsScreen() {
                   fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
                   fontVariantNumeric: 'tabular-nums',
                 }}>{n === 0 ? 'Off' : `${n}s`}</button>
+              ))}
+            </div>
+          </div>
+          {/* Side-switch countdown */}
+          <div style={{ padding: '14px 14px', borderTop: `1px solid ${tokens.borderSoft}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+              {iconBox('timer')}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>Side-switch get-ready</div>
+                <div style={{ fontSize: 11, color: tokens.textMuted, marginTop: 1 }}>
+                  Countdown between left and right on per-side exercises
+                </div>
+              </div>
+              <div style={{ fontSize: 13, color: tokens.textMuted, fontVariantNumeric: 'tabular-nums' }}>
+                {sideSwitchSec}s
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {SIDE_SWITCH_OPTS.map(n => (
+                <button key={n} onClick={() => db.settings.update(1, { sideSwitchSec: n })} style={{
+                  flex: 1, height: 36, borderRadius: 9,
+                  background: sideSwitchSec === n ? tokens.text : tokens.surface2,
+                  color: sideSwitchSec === n ? tokens.bg : tokens.textMuted,
+                  border: `1px solid ${sideSwitchSec === n ? tokens.text : tokens.border}`,
+                  fontWeight: 700, fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
+                  fontVariantNumeric: 'tabular-nums',
+                }}>{n}s</button>
               ))}
             </div>
           </div>

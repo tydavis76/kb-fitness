@@ -62,6 +62,7 @@ export async function seedIfNeeded(): Promise<void> {
       haptics: true,
       restDefaults: { straight: 90, superset: 90, circuit: 60 },
       ownedKettlebells: [16, 20, 24, 32],
+      sideSwitchSec: 5,
     })
   }
 }

@@ -10,6 +10,7 @@ export interface Prescription {
   type: 'reps' | 'time' | 'distance' | 'failure'
   target: string | number
   load: LoadObject
+  per_side?: boolean
 }
 
 export interface ProtocolConstraints {
@@ -110,6 +111,7 @@ export interface SettingsRecord {
   haptics: boolean
   restDefaults: { straight: number; superset: number; circuit: number }
   ownedKettlebells: number[]
+  sideSwitchSec: number
 }
 
 export interface ExerciseLibraryEntry {

@@ -24,6 +24,28 @@ function ExerciseTimer({ durationSec, leadIn, onComplete }: { durationSec: numbe
   )
 }
 
+function SideTransition({ durationSec, nextSide, onDone }: { durationSec: number; nextSide: 'right'; onDone: () => void }) {
+  const timer = useCountdown({ duration: durationSec, leadIn: 0, onComplete: onDone })
+  useEffect(() => { timer.start() }, [])
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 24, padding: '0 32px' }}>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: tokens.textMuted }}>
+        Get ready
+      </div>
+      <div style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.02em' }}>
+        Switch to {nextSide} side
+      </div>
+      <CircularTimer remaining={timer.remaining} total={timer.total} leadCount={0} phase={timer.phase} size={140} accent={tokens.accent} />
+      <button
+        onClick={onDone}
+        style={{ marginTop: 8, fontSize: 13, color: tokens.textMuted, background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', textDecoration: 'underline' }}
+      >
+        Skip
+      </button>
+    </div>
+  )
+}
+
 interface ActiveCircuitProps {
   block: WorkoutBlock
   onExit: () => void
@@ -42,12 +64,15 @@ export function ActiveCircuit({
   const [exerciseIdx, setExerciseIdx] = useState(0)
   const [showRest, setShowRest] = useState(false)
   const [selectedKg, setSelectedKg] = useState<number | null>(null)
+  const [sidePhase, setSidePhase] = useState<'left' | 'switching' | 'right'>('left')
 
   const rounds = block.rounds || 1
   const exercises = block.exercises
   const currentEx = exercises[exerciseIdx]
   const isCurrentTimeBased = currentEx?.prescription.type === 'time'
+  const isCurrentPerSide = currentEx?.prescription.per_side === true && isCurrentTimeBased
   const effectiveRestSec = block.rest_sec ?? settings?.restDefaults?.circuit ?? 60
+  const sideSwitchSec = settings?.sideSwitchSec ?? 5
 
   const isKettlebellOnly = exercises.every(ex =>
     ex.prescription.load.unit === 'lbs' || ex.prescription.load.label.toLowerCase().includes('kettlebell')
@@ -57,6 +82,9 @@ export function ActiveCircuit({
   const kgLoad = (kg: number): import('@/db/types').LoadObject => ({
     value: kg, unit: 'kg', label: `${kg} kg`,
   })
+
+  // Reset side phase when exercise changes
+  useEffect(() => { setSidePhase('left') }, [exerciseIdx])
 
   if (exercises.length === 0) return null
 
@@ -100,8 +128,36 @@ export function ActiveCircuit({
     }
   }
 
+  const handleTimerComplete = () => {
+    if (isCurrentPerSide && sidePhase === 'left') {
+      setSidePhase('switching')
+    } else {
+      handleDoneExercise()
+    }
+  }
+
   if (showRest) {
     return <RestTimer durationSec={effectiveRestSec} onDone={handleRestDone} />
+  }
+
+  if (isCurrentPerSide && sidePhase === 'switching') {
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <ActiveTopBar
+          blockLabel={block.label || 'A'}
+          blockName={block.name || 'Circuit'}
+          blockType="circuit"
+          current={round}
+          total={rounds}
+          onExit={onExit}
+        />
+        <SideTransition
+          durationSec={sideSwitchSec}
+          nextSide="right"
+          onDone={() => setSidePhase('right')}
+        />
+      </div>
+    )
   }
 
   if (isKettlebellOnly && selectedKg === null) {
@@ -297,16 +353,23 @@ export function ActiveCircuit({
                   <ExerciseInfoButton exerciseId={ex.exercise_id} />
                 </div>
                 <div style={{ fontSize: 12, color: tokens.textMuted, marginTop: 2 }}>
-                  {targetValue}
-                  {ex.prescription.type === 'time' ? 's' : ' reps'} · {ex.prescription.load.label}
+                  {ex.prescription.per_side ? `${targetValue}s per side` : `${targetValue}${ex.prescription.type === 'time' ? 's' : ' reps'}`}
+                  {' · '}{ex.prescription.load.label}
                 </div>
                 {active && ex.prescription.type === 'time' && (
-                  <ExerciseTimer
-                    key={`${round}-${idx}`}
-                    durationSec={targetValue}
-                    leadIn={leadIn}
-                    onComplete={handleDoneExercise}
-                  />
+                  <>
+                    {ex.prescription.per_side && (
+                      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.10em', textTransform: 'uppercase', color: tokens.accent, marginTop: 6 }}>
+                        {sidePhase === 'right' ? 'Right side' : 'Left side'}
+                      </div>
+                    )}
+                    <ExerciseTimer
+                      key={`${round}-${idx}-${sidePhase}`}
+                      durationSec={targetValue}
+                      leadIn={active && idx === exerciseIdx ? leadIn : 0}
+                      onComplete={handleTimerComplete}
+                    />
+                  </>
                 )}
               </div>
               {active && (
@@ -333,11 +396,13 @@ export function ActiveCircuit({
         <Btn
           variant={isCurrentTimeBased ? 'secondary' : 'primary'}
           size="lg"
-          onClick={handleDoneExercise}
+          onClick={isCurrentTimeBased ? handleTimerComplete : handleDoneExercise}
           style={{ width: '100%' }}
           icon={isCurrentTimeBased ? 'arrow-right' : 'check'}
         >
-          {isCurrentTimeBased ? 'Skip' : 'Next'}
+          {isCurrentTimeBased
+            ? (isCurrentPerSide && sidePhase === 'left' ? 'Skip to right side' : 'Skip')
+            : 'Next'}
         </Btn>
       </div>
     </div>

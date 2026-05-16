@@ -172,7 +172,8 @@
                   "value": null,
                   "unit": null,
                   "label": "Bodyweight"
-                }
+                },
+                "per_side": true
               },
               "protocol_constraints": {
                 "cues": [
@@ -1317,7 +1318,8 @@
                   "value": null,
                   "unit": "lbs",
                   "label": "Kettlebell (per side)"
-                }
+                },
+                "per_side": true
               },
               "protocol_constraints": {
                 "cues": [
@@ -1888,7 +1890,8 @@
                   "value": null,
                   "unit": "lbs",
                   "label": "Kettlebell"
-                }
+                },
+                "per_side": true
               },
               "protocol_constraints": {
                 "cues": [
