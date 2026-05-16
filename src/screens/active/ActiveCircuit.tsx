@@ -14,9 +14,9 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '@/db/db'
 import { tokens } from '@/styles/tokens'
 
-function ExerciseTimer({ durationSec, leadIn, onComplete }: { durationSec: number; leadIn: number; onComplete: () => void }) {
+function ExerciseTimer({ durationSec, leadIn, onComplete, started }: { durationSec: number; leadIn: number; onComplete: () => void; started: boolean }) {
   const timer = useCountdown({ duration: durationSec, leadIn, onComplete })
-  useEffect(() => { timer.start() }, [])
+  useEffect(() => { if (started) timer.start() }, [started])
   return (
     <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0', position: 'relative' }}>
       <CircularTimer remaining={timer.remaining} total={timer.total} leadCount={timer.leadCount} phase={timer.phase} size={88} />
@@ -65,6 +65,7 @@ export function ActiveCircuit({
   const [showRest, setShowRest] = useState(false)
   const [selectedKg, setSelectedKg] = useState<number | null>(null)
   const [sidePhase, setSidePhase] = useState<'left' | 'switching' | 'right'>('left')
+  const [timerStarted, setTimerStarted] = useState(false)
 
   const rounds = block.rounds || 1
   const exercises = block.exercises
@@ -83,8 +84,8 @@ export function ActiveCircuit({
     value: kg, unit: 'kg', label: `${kg} kg`,
   })
 
-  // Reset side phase when exercise changes
-  useEffect(() => { setSidePhase('left') }, [exerciseIdx])
+  // Reset side phase and timer when exercise changes
+  useEffect(() => { setSidePhase('left'); setTimerStarted(false) }, [exerciseIdx])
 
   if (exercises.length === 0) return null
 
@@ -368,6 +369,7 @@ export function ActiveCircuit({
                       durationSec={targetValue}
                       leadIn={active && idx === exerciseIdx ? leadIn : 0}
                       onComplete={handleTimerComplete}
+                      started={timerStarted}
                     />
                   </>
                 )}
@@ -394,14 +396,20 @@ export function ActiveCircuit({
         }}
       >
         <Btn
-          variant={isCurrentTimeBased ? 'secondary' : 'primary'}
+          variant={isCurrentTimeBased && !timerStarted ? 'primary' : isCurrentTimeBased ? 'secondary' : 'primary'}
           size="lg"
-          onClick={isCurrentTimeBased ? handleTimerComplete : handleDoneExercise}
+          onClick={isCurrentTimeBased
+            ? (timerStarted ? handleTimerComplete : () => setTimerStarted(true))
+            : handleDoneExercise}
           style={{ width: '100%' }}
-          icon={isCurrentTimeBased ? 'arrow-right' : 'check'}
+          icon={isCurrentTimeBased && !timerStarted ? 'play' : isCurrentTimeBased ? 'arrow-right' : 'check'}
         >
           {isCurrentTimeBased
-            ? (isCurrentPerSide && sidePhase === 'left' ? 'Skip to right side' : 'Skip')
+            ? (!timerStarted
+                ? 'Start'
+                : isCurrentPerSide && sidePhase === 'left'
+                  ? 'Skip to right side'
+                  : 'Skip')
             : 'Next'}
         </Btn>
       </div>

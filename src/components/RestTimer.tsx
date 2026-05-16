@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CircularTimer } from './CircularTimer'
 import { useCountdown } from '@/hooks/useCountdown'
 import { tokens } from '@/styles/tokens'
@@ -17,15 +17,18 @@ export const RestTimer: React.FC<RestTimerProps> = ({
     leadIn: 0,
     onComplete: onDone,
   })
-
-  // Auto-start on mount
+  // Block tap-to-skip for 600ms after mount to prevent tap-through from previous screen
+  const [tappable, setTappable] = useState(false)
+  const tappableRef = useRef(false)
   useEffect(() => {
     timer.start()
+    const t = setTimeout(() => { setTappable(true); tappableRef.current = true }, 600)
+    return () => clearTimeout(t)
   }, [])
 
   return (
     <div
-      onClick={onDone}
+      onClick={() => { if (tappableRef.current) onDone() }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -61,6 +64,8 @@ export const RestTimer: React.FC<RestTimerProps> = ({
             fontSize: '14px',
             color: tokens.textMuted,
             textAlign: 'center',
+            opacity: tappable ? 1 : 0,
+            transition: 'opacity 0.3s',
           }}
         >
           Tap anywhere to skip rest
