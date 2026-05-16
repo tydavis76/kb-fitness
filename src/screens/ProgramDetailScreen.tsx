@@ -7,6 +7,7 @@ import { ScreenHeader } from '../components/primitives/ScreenHeader'
 import { Card } from '../components/primitives/Card'
 import { Chip } from '../components/primitives/Chip'
 import { Sectionlabel } from '../components/primitives/Sectionlabel'
+import { Btn } from '../components/primitives/Btn'
 import { Icon } from '../components/Icon'
 import { ProgramMenuSheet } from '../components/ProgramMenuSheet'
 import { ProgramConfirmSheet } from '../components/ProgramConfirmSheet'
@@ -20,6 +21,7 @@ export function ProgramDetailScreen() {
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(false)
   const [confirmAction, setConfirmAction] = useState<ProgramConfirmAction | null>(null)
+  const [selectedPhaseIndex, setSelectedPhaseIndex] = useState<number | null>(null)
 
   const program = useLiveQuery(
     () => programId ? db.programs.where('programId').equals(programId).first() : undefined,
@@ -61,6 +63,24 @@ export function ProgramDetailScreen() {
     setConfirmAction(null)
   }
 
+  async function handleStartProgram() {
+    if (!program?.id) return
+    // Deactivate any currently active program
+    const current = await db.programs.where('status').equals('active').first()
+    if (current?.id) {
+      await db.programs.update(current.id, { status: 'paused' })
+    }
+    // Reset and activate this program
+    await db.programs.update(program.id, {
+      status: 'active',
+      phaseIndex: 0,
+      weekIndex: 0,
+      dayIndex: 0,
+      startedAt: Date.now(),
+    })
+    navigate('/')
+  }
+
   if (!program) {
     return (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto' }}>
@@ -76,6 +96,8 @@ export function ProgramDetailScreen() {
 
   const currentPhase = program.phases[program.phaseIndex]
   const weeksInPhase = program.weekIndex + 1
+  const browsePhaseIndex = selectedPhaseIndex ?? program.phaseIndex
+  const browsePhase = program.phases[browsePhaseIndex]
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'auto', position: 'relative' }}>
@@ -181,13 +203,19 @@ export function ProgramDetailScreen() {
                     }} />
                   )}
                 </div>
-                <Card
-                  padded={false}
+                <button
+                  onClick={() => setSelectedPhaseIndex(i === browsePhaseIndex ? null : i)}
                   style={{
                     flex: 1,
                     padding: 14,
                     marginBottom: 4,
-                    background: state === 'current' ? tokens.surface2 : tokens.surface,
+                    background: i === browsePhaseIndex ? tokens.surface2 : tokens.surface,
+                    border: `1px solid ${i === browsePhaseIndex ? tokens.border : tokens.borderSoft}`,
+                    borderRadius: 14,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    color: tokens.text,
+                    fontFamily: KB_FONT,
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -204,7 +232,7 @@ export function ProgramDetailScreen() {
                       {phase.weeks} WK
                     </Chip>
                   </div>
-                </Card>
+                </button>
               </div>
             )
           })}
@@ -214,16 +242,15 @@ export function ProgramDetailScreen() {
         <Sectionlabel
           right={<span style={{ fontSize: 11, color: tokens.textMuted }}>Tap any week</span>}
         >
-          Week schedule ({currentPhase?.name})
+          Week schedule ({browsePhase?.name})
         </Sectionlabel>
 
         <Card padded={false}>
-          {Array.from({ length: currentPhase?.weeks ?? 0 }, (_, i) => {
+          {Array.from({ length: browsePhase?.weeks ?? 0 }, (_, i) => {
             const weekNum = i + 1
-            const isCurrentWeek = i === program.weekIndex
-            // Calculate absolute week number for display
+            const isCurrentWeek = browsePhaseIndex === program.phaseIndex && i === program.weekIndex
             const weeksBefore = program.phases
-              .slice(0, program.phaseIndex)
+              .slice(0, browsePhaseIndex)
               .reduce((a, p) => a + p.weeks, 0)
             const absoluteWeek = weeksBefore + weekNum
 
@@ -277,6 +304,19 @@ export function ProgramDetailScreen() {
           })}
         </Card>
       </div>
+
+      {program.status !== 'active' && (
+        <div style={{
+          position: 'sticky',
+          bottom: 0,
+          padding: 16,
+          background: `linear-gradient(180deg, transparent, ${tokens.bg} 30%)`,
+        }}>
+          <Btn variant="primary" size="lg" full icon="play" onClick={handleStartProgram}>
+            Start Program
+          </Btn>
+        </div>
+      )}
 
       {menuOpen && (
         <ProgramMenuSheet
