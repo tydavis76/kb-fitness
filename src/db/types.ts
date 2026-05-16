@@ -109,6 +109,7 @@ export interface SettingsRecord {
   sound: boolean
   haptics: boolean
   restDefaults: { straight: number; superset: number; circuit: number }
+  seedVersion?: number
 }
 
 export interface ExerciseLibraryEntry {

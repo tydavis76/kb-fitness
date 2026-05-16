@@ -1,0 +1,1 @@
+import{a as e,r as t}from"./db-CbojuyqI.js";var n=e();function r({children:e,right:r}){return(0,n.jsxs)(`div`,{style:{display:`flex`,alignItems:`center`,justifyContent:`space-between`,padding:`0 16px`,marginBottom:8},children:[(0,n.jsx)(`div`,{style:{fontSize:11,fontWeight:700,color:t.textMuted,letterSpacing:`0.09em`,textTransform:`uppercase`},children:e}),r]})}export{r as t};

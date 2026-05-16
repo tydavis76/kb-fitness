@@ -2,15 +2,17 @@ import { db } from './db'
 import programData from '../../programs/8-week-kettlebell-program.json'
 import type { ProgramRecord, SessionRecord, SettingsRecord } from './types'
 
-export async function seedIfNeeded(): Promise<void> {
-  // Check if already seeded
-  if (typeof localStorage !== 'undefined' && localStorage.getItem('kb.seeded')) {
-    return
-  }
+// Bump this constant to force a fresh re-seed on all clients
+const SEED_VERSION = 2
 
-  // Use a transaction to ensure atomicity
+export async function seedIfNeeded(): Promise<void> {
+  const settings = await db.settings.get(1)
+  if (settings?.seedVersion === SEED_VERSION) return
+
   await db.transaction('rw', db.programs, db.sessions, db.settings, async () => {
-    // Insert program record
+    await db.programs.clear()
+    await db.sessions.clear()
+
     const programRecord: ProgramRecord = {
       programId: programData.program_id,
       title: programData.title,
@@ -31,7 +33,6 @@ export async function seedIfNeeded(): Promise<void> {
 
     await db.programs.add(programRecord)
 
-    // Insert all session templates as SessionRecords
     const sessions: SessionRecord[] = programData.session_templates.map((template: any) => ({
       sessionId: template.session_id,
       programId: programData.program_id,
@@ -45,7 +46,6 @@ export async function seedIfNeeded(): Promise<void> {
 
     await db.sessions.bulkAdd(sessions)
 
-    // Insert default settings
     const defaultSettings: SettingsRecord = {
       id: 1,
       unit: 'lb',
@@ -53,13 +53,9 @@ export async function seedIfNeeded(): Promise<void> {
       sound: true,
       haptics: true,
       restDefaults: { straight: 90, superset: 90, circuit: 60 },
+      seedVersion: SEED_VERSION,
     }
 
-    await db.settings.add(defaultSettings)
+    await db.settings.put(defaultSettings)
   })
-
-  // Mark as seeded in localStorage
-  if (typeof localStorage !== 'undefined') {
-    localStorage.setItem('kb.seeded', '1')
-  }
 }
