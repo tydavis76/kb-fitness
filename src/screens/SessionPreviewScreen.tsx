@@ -17,18 +17,30 @@ export function SessionPreviewScreen() {
   const stateSessionId = (location.state as any)?.sessionId
   const sessionId = stateSessionId || (new URLSearchParams(location.search).get('sessionId') || '')
 
-  // Query the session
-  const session = useLiveQuery(() =>
-    sessionId ? db.sessions.where('sessionId').equals(sessionId).first() : undefined
+  const session = useLiveQuery(
+    () => sessionId ? db.sessions.where('sessionId').equals(sessionId).first() : undefined,
+    [sessionId]
   )
 
   const template = session?.template
+  if (!sessionId) {
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 16 }}>
+        <ScreenHeader title="Session" leftIcon="chevron-left" leftAction={() => navigate(-1)} />
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ color: tokens.textMuted }}>No session selected.</div>
+        </div>
+      </div>
+    )
+  }
   if (!template) {
     return (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 16 }}>
-        <ScreenHeader title="Session Preview" leftIcon="chevron-left" leftAction={() => navigate(-1)} />
+        <ScreenHeader title="Session" leftIcon="chevron-left" leftAction={() => navigate(-1)} />
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ color: tokens.textMuted }}>Loading session...</div>
+          <div style={{ color: tokens.textMuted }}>
+            {session === undefined ? 'Loading…' : `Session not found: ${sessionId}`}
+          </div>
         </div>
       </div>
     )
@@ -49,7 +61,7 @@ export function SessionPreviewScreen() {
         leftIcon="chevron-left"
         leftAction={() => navigate(-1)}
       />
-      <div style={{ flex: 1, overflow: 'auto', padding: '0 16px 100px' }}>
+      <div style={{ flex: 1, minHeight: 0, overflow: 'auto', padding: '0 16px 140px' }}>
         {blocks.map((block, blockIndex) => (
           <div key={blockIndex} style={{ marginBottom: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -167,7 +179,7 @@ export function SessionPreviewScreen() {
         position: 'fixed',
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 64,
         padding: 16,
         background: `linear-gradient(180deg, transparent, ${tokens.bg} 30%)`,
       }}>
