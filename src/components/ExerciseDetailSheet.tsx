@@ -74,14 +74,14 @@ export function ExerciseDetailSheet({ open, onClose, exercise, mode = 'view', on
   const subs = SUBSTITUTIONS[exercise.id]
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 64 }}>
       <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)' }} />
       <div style={{
         position: 'relative', maxHeight: '92%', overflow: 'auto',
         background: tokens.bg, borderTopLeftRadius: 22, borderTopRightRadius: 22,
         borderTop: `1px solid ${tokens.border}`,
         boxShadow: '0 -16px 48px rgba(0,0,0,0.55)',
-        padding: '10px 16px 16px',
+        padding: '10px 16px 24px',
       }}>
         <div style={{ width: 36, height: 4, borderRadius: 2, background: tokens.border, margin: '4px auto 14px' }} />
 
