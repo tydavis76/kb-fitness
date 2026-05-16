@@ -26,8 +26,12 @@ class KBDatabase extends Dexie {
       workoutLogs:   '++id, sessionId, completedAt, rating',
       activeWorkout: '++id',
       settings:      '++id',
-    }).upgrade(() => {
+    }).upgrade(tx => {
       localStorage.removeItem('kb.seeded')
+      return Promise.all([
+        tx.table('programs').clear(),
+        tx.table('sessions').clear(),
+      ])
     })
   }
 }
