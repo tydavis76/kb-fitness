@@ -28,7 +28,7 @@ export interface ExerciseInstance {
 }
 
 export interface WorkoutBlock {
-  type: 'straight' | 'superset' | 'circuit' | 'amrap' | 'ladder' | 'interval' | 'carry' | 'tempo'
+  type: 'straight' | 'superset' | 'circuit' | 'complex' | 'amrap' | 'ladder' | 'interval' | 'carry' | 'tempo'
   label?: string
   name?: string
   rounds?: number

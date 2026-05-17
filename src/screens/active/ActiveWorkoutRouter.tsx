@@ -10,11 +10,13 @@ import { ActiveLadder } from './ActiveLadder'
 import { ActiveInterval } from './ActiveInterval'
 import { ActiveCarry } from './ActiveCarry'
 import { ActiveTempo } from './ActiveTempo'
+import { ActiveComplex } from './ActiveComplex'
 
 const SCREEN_MAP = {
   straight: ActiveStraight,
   superset: ActiveSuperset,
   circuit: ActiveCircuit,
+  complex: ActiveComplex,
   amrap: ActiveAmrap,
   ladder: ActiveLadder,
   interval: ActiveInterval,

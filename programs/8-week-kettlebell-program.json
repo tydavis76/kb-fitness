@@ -705,7 +705,7 @@
       },
       "blocks": [
         {
-          "type": "circuit",
+          "type": "complex",
           "name": "KB Complex",
           "rounds": 3,
           "exercises": [
